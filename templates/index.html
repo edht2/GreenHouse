@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+    <!-- Body stuff goes here! -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <div class='banner'>
+        <img id='banner_image' src={{ url_for('static', filename='img/barton.jpg') }}>
+        <p class='banner_text'>Barton Gardens</p>
+    </div>
+    <div id='login_plaque'>
+        <center><button id='login_button'>Login</button></center>
+    </div>
+    <div class='banner'>
+        <img id='banner_image' src={{ url_for('static', filename='img/greenhouse.webp') }}>
+        <div class='tint'>Barton Estate is a region in wippingham. The well kept gardens</div>
+        
+        
+    </div>
+    <p>Hi</p>
+{% endblock %}
+
