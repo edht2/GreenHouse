@@ -1,14 +1,48 @@
-* {
-    
+@font-face{
+    font-family: Helvetica;
+    src: url('../font/Helvetica-Bold-Font.otf');
+    font-weight: bold;
+}
+* {   
+    max-width: 100%;
+    overflow-x: hidden;
     padding: 0;
     margin: 0;
+    background-color: rgb(255, 255, 255);
+    color: rgb(55, 55, 55);
+    align-items: center;
+    font-weight: bold;
+    font-family: Helvetica;
+}
+#content {
+    color: rgb(120, 120, 120);
+    font-size: 75px;
+    margin: 10px;
+}
+#top_pannel {
+    background-color: rgb(245, 245, 237);
+    padding: 10px;
+    font-size: 150px;
+    width: 100%;
+    height: 15%;
 }
 #footer {
     position: absolute;
+    background-color: rgb(245, 245, 237);
     bottom: 0;
+    left: 10px;
     width: 100%;
-    height: 2.5rem;            /* Footer height */
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
-#content {
-    padding-bottom: 2.5rem;    /* Footer height */  
+.brdr {
+    background-color: rgb(245, 245, 237);
+}
+.icon {
+    background-color: rgb(245, 245, 237);
+    width: 125px;
+    height: 125px;
+    margin: 10px;
 }
