@@ -1,0 +1,32 @@
+
+
+{% macro render_field(field) %}
+    <div class="field">
+        <p>{{ field.label }}</p>
+        {{ field(**kwargs)|safe }}
+        {% if field.errors %}
+            <ul class='errors'>
+            {% for error in field.errors %}
+                <li class='error'>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block header %}Login{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <form method=post>
+        <dl>
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+        </dl>
+        <div class='field'>
+            <input id='submit' type='submit' value='Login'>
+        </div>
+    </form>
+    
+{% endblock %}
