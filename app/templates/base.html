@@ -18,19 +18,27 @@
             <div class='brdr'>
                 <img class='icon' id='nav_calendar' src={{url_for('static', filename='img/icon/calendar.png')}} onclick=location.replace("calendar");>
             </div >
+            
             <div class='brdr'>
                 <img class='icon' id='nav_todo' src={{url_for('static', filename='img/icon/todo.png')}} onclick=location.replace("todo-list")>
             </div>
             <div class='brdr'>
                 <img class='icon' id='nav_greenhouse' src={{url_for('static', filename='img/icon/greenhouse.png')}} onclick=location.replace("green-house")>
             </div>
-            <div class='brdr'>
-                <img class='icon' id='nav_test' src={{url_for('static', filename='img/icon/test.png')}} onclick=location.replace("test")>
-            </div>
-            <div class='brdr'>
-                <img class='icon' id='nav_settings' src={{url_for('static', filename='img/icon/settings.png')}} onclick=location.replace("settings")>
-            </div>
+            {% if current_user.is_authenticated %}
+                {% if current_user.permissions %}
+                    <div class='brdr'>
+                        <img class='icon' id='nav_test' src={{url_for('static', filename='img/icon/test.png')}} onclick=location.replace("test")>
+                    </div>
+                {% endif %}
+                {% if current_user.permissions %}
+                    <div class='brdr'>
+                        <img class='icon' id='nav_settings' src={{url_for('static', filename='img/icon/settings.png')}} onclick=location.replace("settings")>
+                    </div>
+                {% endif %}
+            {% endif %}
         {% endblock %}
+        
         </div>
     </body>
 </html>

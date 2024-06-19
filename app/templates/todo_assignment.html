@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{task.title}}{% endblock %}
+{% block header %}{{task.title}}{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/todo.css') }}">
+    <script src='/static/js/todo.js'></script>
+
+    <div class='paragraph'>
+        {{task.creation_date}} <br>
+        <div id='buttons'>
+            <input type='button' id='completed' value='Completed' onclick='completed()'></input>
+            {% if (current_user.permissions) %}
+                <input type='button' id='edit_todo_item' value='Edit' onclick='edit()'></input>
+            {% endif %}
+        </div>
+    </div>
+    <br> <div id='descr'> {{task.description}} </div> <br>
+{% endblock %}

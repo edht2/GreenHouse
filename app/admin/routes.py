@@ -1,4 +1,7 @@
-from flask import render_template
+from flask import render_template, request
+from flask_login import login_required
+from app.extensions import db
+from app.models import Todo
 from app.admin import admin
 
 # ******************************************* New Page *******************************************
@@ -14,3 +17,18 @@ def test():
 def settings():
     """ This will be used to alter less main stream things. Like the storm protocol """
     return render_template("settings.html")
+
+
+# ***************************************** Ajax Request *****************************************
+@ admin.route('/todo-list/assignment/<id>/edited', methods=['GET', 'POST'])
+@ login_required
+def todo_edited(id):
+    """ Used for editing a todo item, however this is accessable by super users! """
+    if request.method == "POST":
+        new_title = request.form['title']
+        new_description = request.form['description']
+        
+    db.session.query(Todo).filter_by(id=id).first()
+    print(id, new_title, new_description)
+    db.session.commit()
+    return 'Done'

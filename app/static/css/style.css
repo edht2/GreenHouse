@@ -14,10 +14,18 @@
     font-weight: bold;
     font-family: Helvetica;
 }
+.paragraph {
+    font-size: 50px;
+}
+.note {
+    font-size: 50px;
+    color: rgb(168, 168, 168);
+}
 #content {
     color: rgb(120, 120, 120);
     font-size: 75px;
     margin: 10px;
+    overflow-y: scroll;
 }
 #top_pannel {
     background-color: rgb(245, 245, 237);
@@ -27,15 +35,15 @@
     height: 15%;
 }
 #footer {
-    position: absolute;
     background-color: rgb(245, 245, 237);
     bottom: 0;
-    left: 10px;
-    width: 100%;
+    left: 0;
+    right: 0;
     height: 15%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    position: fixed;
 }
 .brdr {
     background-color: rgb(245, 245, 237);
