@@ -1,0 +1,16 @@
+#date_table {
+    position: absolute;
+    width: 98%;
+    height: 70%;
+}
+.date {
+    border-radius: 10px;
+    background-color: rgb(221, 221, 221);
+    width: 100%;
+    padding: 10px;
+}
+.event {
+    border-radius: 10px;
+    background-color: rgb(194, 194, 194);
+    width: 98%;
+}

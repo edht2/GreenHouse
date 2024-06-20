@@ -23,12 +23,21 @@ def settings():
 @ admin.route('/todo-list/assignment/<id>/edited', methods=['GET', 'POST'])
 @ login_required
 def todo_edited(id):
-    """ Used for editing a todo item, however this is accessable by super users! """
+    """ Used for editing a todo item, however this is accessable by super users! (hence it being
+    under the 'admin' blueprint!!) """
+    
     if request.method == "POST":
         new_title = request.form['title']
         new_description = request.form['description']
+        # I recive the new title and description
         
-    db.session.query(Todo).filter_by(id=id).first()
-    print(id, new_title, new_description)
+    assignment = db.session.query(Todo).filter_by(id=id).first()
+    # I get the assignement
+    
+    assignment.title = new_title
+    assignment.description = new_description
+    # And update the title and description
+    
     db.session.commit()
+    # finally I save the edited object
     return 'Done'

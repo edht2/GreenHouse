@@ -3,8 +3,18 @@
 {% block header %}Calendar{% endblock %}
 {% block content %}
     <!-- Body stuff goes here! -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    Calendar also very cool!
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+    <div>
+        <div id='date_table'>
+            <div class='date'>
+                5-10-24
+                <div class='event'>
+                    Clean the gerbils
+                </div>
+            </div>
+        </div>
+    </div>
+
     
 {% endblock %}
 
