@@ -1,6 +1,7 @@
 from flask import Flask
 from app.extensions import db, fl
 from flask_login import current_user
+from datetime import date, timedelta
 from config import Config
 from app.models import *
 
@@ -20,6 +21,9 @@ def create_app(config_class=Config):
         return User.query.get(int(user_id))
     
     with app.app_context():
+        # ********************************************
+        # THIS IS TO BE DELETED IN A LIVE ENVIRONMENT!
+        # ********************************************
         db.drop_all()
         # deletes the DB
         db.create_all()
@@ -31,9 +35,14 @@ def create_app(config_class=Config):
         al = User(full_name="Al Haig-Thomas", email="alhaigthomas@gmail.com", password="gerbil", permissions=1)
         al.hash_password()
         
+        tdy = date.today() - timedelta(days=5)
         for j, i in enumerate(range(10)):
-            task = Todo(title='GERBIL ' * (j + 1), description="Clean the gerbil cage in the border. And tidy up the food bowl.", image_directory='gerbil.jpg', is_completed=False)
-            db.session.add(task)
+            new_date = Date(date=tdy+timedelta(days=j))
+            db.session.add(new_date)
+            for i in range(2):
+                print(new_date.id)
+                #new_event = Event(date_id=new_date.id, title="gerbil wedding")
+                #db.session.add(new_event)
             
         db.session.add(ed)
         db.session.add(al)

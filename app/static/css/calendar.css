@@ -1,16 +1,25 @@
-#date_table {
-    position: absolute;
-    width: 98%;
-    height: 70%;
+#calendar {
+    margin: 50px;
+    margin-bottom: 25px;
+    margin-top: 25px;
 }
 .date {
     border-radius: 10px;
-    background-color: rgb(221, 221, 221);
+    background-color: rgb(226, 226, 226);
     width: 100%;
     padding: 10px;
 }
 .event {
     border-radius: 10px;
-    background-color: rgb(194, 194, 194);
+    background-color: rgb(197, 197, 197);
     width: 98%;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.break {
+    height: 1px;
+    width: 100%;
+    background-color: rgb(55, 55, 55);
+    margin-top: 25px;
+    margin-bottom: 25px;
 }

@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect
 from flask_login import login_user, login_required
+from datetime import date as dt_date
 from app.main import main
 from app.extensions import db, fl
 from app.models import *
@@ -41,7 +42,15 @@ def greenhouse():
 def calendar():
     """ The calendar page will show events that the gardeners should know about. Like a wedding. I
     do this so the gardeners can prepare and make the garden look spic and span during an event"""
-    return render_template("calendar.html")
+    all_dates = db.session.query(Date).all()
+    future_dates = []
+    present_day = dt_date.today()
+    
+    for date in all_dates:
+        if date.date > present_day:
+            events = db.session.query(Event).filter_by(date_id=date.id).all()
+            future_dates.append([date.date]+events)
+    return render_template("calendar.html", dates=future_dates, len_dates=len(future_dates))
 
 
 # ******************************************* New Page *******************************************

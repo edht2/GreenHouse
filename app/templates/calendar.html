@@ -4,15 +4,22 @@
 {% block content %}
     <!-- Body stuff goes here! -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
-    <div>
-        <div id='date_table'>
+    {% if (len_dates < 1) %}
+        <center><div class='note'>No upcoming dates!</div></center>
+    {% endif %}
+    <div id='calendar'>
+        {% for date in dates %}
             <div class='date'>
-                5-10-24
-                <div class='event'>
-                    Clean the gerbils
-                </div>
+                {{ date[0].date }}
+                {{ date.pop(0) }}
+                {% for event in date %}
+                    <div class='event'>
+                        {{ event.title }}
+                    </div>
+                {% endfor %}
             </div>
-        </div>
+            <div class="break"></div>
+        {% endfor %}
     </div>
 
     

@@ -6,6 +6,7 @@
 .todo_item {
     background-color: rgb(226, 226, 226);
     padding: 5px;
+    border-radius: 10px;
 }
 .break {
     height: 1px;
@@ -25,11 +26,6 @@ input[type=button] {
     padding: 3rem 10px;
     font-size: 50px;
     border-radius: 10px;
-    border: 0;
-}
-iframe {
-    height: 500px;
-    width: 500px;
     border: 0;
 }
 #top_pannel_edit {
