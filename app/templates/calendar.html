@@ -10,11 +10,10 @@
     <div id='calendar'>
         {% for date in dates %}
             <div class='date'>
-                {{ date[0].date }}
                 {{ date.pop(0) }}
                 {% for event in date %}
                     <div class='event'>
-                        {{ event.title }}
+                        {{ event.event_title }}
                     </div>
                 {% endfor %}
             </div>
@@ -25,3 +24,4 @@
     
 {% endblock %}
 
+[Mon-2/7/24, Hello world][][][][]

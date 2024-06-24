@@ -2,6 +2,7 @@ from flask import Flask
 from app.extensions import db, fl
 from flask_login import current_user
 from datetime import date, timedelta
+from random import randint
 from config import Config
 from app.models import *
 
@@ -10,15 +11,33 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+
     # ***** Database *****
     db.init_app(app)
+    # ********************
+    
     
     # ***** Flask Login *****
     fl.init_app(app)
     fl.login_view = "main.login"
+    
+    
     @fl.user_loader
     def load_user(user_id): 
         return User.query.get(int(user_id))
+    # ***********************
+
+
+    # ***** Register Blueprints *****
+    from app.main import main
+    app.register_blueprint(main)
+    
+    from app.admin import admin
+    app.register_blueprint(admin)
+    
+    from app.error import error
+    app.register_blueprint(error)
+    
     
     with app.app_context():
         # ********************************************
@@ -36,28 +55,13 @@ def create_app(config_class=Config):
         al.hash_password()
         
         tdy = date.today() - timedelta(days=5)
-        for j, i in enumerate(range(10)):
-            new_date = Date(date=tdy+timedelta(days=j))
-            db.session.add(new_date)
-            for i in range(2):
-                print(new_date.id)
-                #new_event = Event(date_id=new_date.id, title="gerbil wedding")
-                #db.session.add(new_event)
+        for i in range(20):
+            new_event = Event(date=tdy+timedelta(days=randint(1, 10)), event_title="gerbil wedding")
+            db.session.add(new_event)
             
         db.session.add(ed)
         db.session.add(al)
         db.session.commit()
 
-
-    # ***** Register Blueprints *****
-    from app.main import main
-    app.register_blueprint(main)
-    
-    from app.admin import admin
-    app.register_blueprint(admin)
-    
-    from app.error import error
-    app.register_blueprint(error)
-
-    # return app object!
+    # return constructed app object!
     return app
