@@ -2,7 +2,6 @@ from flask import render_template, request, redirect
 from flask_login import login_user, login_required
 from datetime import date as dt_date
 from datetime import timedelta
-import math as mth
 from app.main import main
 from app.extensions import db
 from app.models import *
@@ -53,7 +52,7 @@ def calendar(week):
         pd = dt_date.today()
         pd += timedelta(days=7*int(week)-pd.weekday())
         
-        for day in range(8):
+        for day in range(7):
             # so for every day in a seven-day period
             nd = pd+timedelta(days=day)
             events_for_ths_day = db.session.query(Event).filter_by(date=nd).all()
@@ -64,6 +63,23 @@ def calendar(week):
         return redirect('/calendar')
 
 
+# *************************************** Calendar Navbar ****************************************
+""" On the calendar page there are two buttons, these buttons redirect the user to another redirect
+    but with the specified week ofset!"""
+@ main.route('/calendar/<week>/<act>')
+@ login_required
+def calendar_navbar(week, act):
+    try:
+        if act == 'next':
+            return redirect('/calendar/'+str(int(week)+1))
+        if act == 'prev':
+            return redirect('/calendar/'+str(int(week)-1))
+        # These two conditionals help move users between pages (weeks)
+    except:
+        return redirect('/calendar/0')
+        # And of course, we must add a conditional to stop errno 500! (Internal Server Error)
+    
+    
 # ****************************************** Calendar fix ****************************************
 """ If the user tries to go to '/calendar' I do not allow them as I need to know what week you want
     to retrive. To fix them I redirect the user to the present week! """

@@ -7,6 +7,10 @@
     {% if (len_dates < 1) %}
         <center><div class='note'>No upcoming dates!</div></center>
     {% endif %}
+    <center>
+        <input class='nav' id="prev" type='button' value="<" onclick='window.location.href += "/prev"'>
+        <input class='nav' id="next" type='button' value=">" onclick='window.location.href += "/next"'>
+    </center>
     <div id='calendar'>
         {% for date in dates %}
             <div class='date'>
@@ -23,5 +27,3 @@
 
     
 {% endblock %}
-
-[Mon-2/7/24, Hello world][][][][]

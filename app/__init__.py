@@ -2,7 +2,8 @@ from flask import Flask
 from app.extensions import db, fl
 from flask_login import current_user
 from datetime import date, timedelta
-from random import randint
+from app.calendar import populate_calendar
+from random import randint, choice
 from config import Config
 from app.models import *
 
@@ -20,7 +21,6 @@ def create_app(config_class=Config):
     # ***** Flask Login *****
     fl.init_app(app)
     fl.login_view = "main.login"
-    
     
     @fl.user_loader
     def load_user(user_id): 
@@ -40,23 +40,31 @@ def create_app(config_class=Config):
     
     
     with app.app_context():
-        # ********************************************
-        # THIS IS TO BE DELETED IN A LIVE ENVIRONMENT!
-        # ********************************************
         db.drop_all()
         # deletes the DB
         db.create_all()
         # recreates the DB
-        
         # I do this so the DB auto refreshed without me doing anything
+        
+        # ***** Populate Calendar *****
+        populate_calendar()
+        # *****************************
+        
+        # *****************************************************
+        # THE FOLLOWING IS TO BE DELETED IN A LIVE ENVIRONMENT!
+        # *****************************************************
+        
+        
         ed = User(full_name="Ed Haig-Thomas", email="ehaigthomas@gmail.com", password="gerbil", permissions=1)
         ed.hash_password()
         al = User(full_name="Al Haig-Thomas", email="alhaigthomas@gmail.com", password="gerbil", permissions=1)
         al.hash_password()
         
         tdy = date.today() - timedelta(days=5)
+        events = "Wedding", "Lake Cottage is letted", "Bank holiday", "Meeting (9:30-11:30)"
+        
         for i in range(20):
-            new_event = Event(date=tdy+timedelta(days=randint(1, 10)), event_title="gerbil wedding")
+            new_event = Event(date=tdy+timedelta(days=randint(1, 10)), event_title=choice(events))
             db.session.add(new_event)
             
         db.session.add(ed)

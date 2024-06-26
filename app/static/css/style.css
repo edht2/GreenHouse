@@ -25,14 +25,25 @@
     color: rgb(120, 120, 120);
     font-size: 75px;
     margin: 10px;
-    overflow-y: scroll;
+}
+.nav {
+    height: 100px;
+    width: 25%;
+    background-color: rgb(55, 55, 55);;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+    font-size: 50px;
 }
 #top_pannel {
     background-color: rgb(245, 245, 237);
     padding: 10px;
     font-size: 150px;
-    width: 100%;
+    width: 125%;
     height: 15%;
+}
+#spc {
+    height: 220px;
 }
 #footer {
     background-color: rgb(245, 245, 237);
