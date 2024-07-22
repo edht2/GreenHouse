@@ -1,0 +1,18 @@
+.field { margin: 50px; }
+.errors { padding: 5px 0px; }
+.error {
+    color: rgb(255, 0, 0);
+    font-size: 40px;
+}
+input {
+    width: 95%;
+    padding: 1rem 10px;
+    font-size: 50px;
+    border-radius: 10px;
+    border: 0;
+    background-color: rgb(241, 241, 241);
+}
+input[type=submit] {
+    background-color: rgb(55, 55, 55);
+    color: rgb(255, 255, 255);
+}

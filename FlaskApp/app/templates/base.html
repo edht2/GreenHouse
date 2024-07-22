@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        {% block head %}
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+            <title>{% block title %}{% endblock %} - Barton Gardens</title>
+            <meta name="viewport" content="user-scalable=no">
+        {% endblock %}
+    </head>
+    <body>
+        <div id='top_pannel'>
+            {% block header %}{% endblock %}
+        </div>
+        <div id="content">{% block content %}{% endblock %}</div>
+        
+        <div id='spc'> </div>
+        <div id="footer">
+        {% block footer %}
+            <div class='brdr'>
+                <img class='icon' id='nav_calendar' src={{url_for('static', filename='img/icon/calendar.png')}} onclick='location.replace("/calendar/display/0");'>
+            </div >
+            
+            <div class='brdr'>
+                <img class='icon' id='nav_todo' src={{url_for('static', filename='img/icon/todo.png')}} onclick='location.replace("/todo-list");'>
+            </div>
+            <div class='brdr'>
+                <img class='icon' id='nav_greenhouse' src={{url_for('static', filename='img/icon/greenhouse.png')}} onclick='location.replace("/green-house");'>
+            </div>
+            {% if current_user.is_authenticated %}
+                {% if current_user.permissions %}
+                    <div class='brdr'>
+                        <img class='icon' id='nav_test' src={{url_for('static', filename='img/icon/test.png')}} onclick='location.replace("/test")'>
+                    </div>
+                {% endif %}
+                {% if current_user.permissions %}
+                    <div class='brdr'>
+                        <img class='icon' id='nav_settings' src={{url_for('static', filename='img/icon/settings.png')}} onclick='location.replace("/settings")'>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+        
+        </div>
+    </body>
+</html>
+

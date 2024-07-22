@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: what3words
+Version: 3.1.1
+Summary: What3words API wrapper library
+Home-page: https://github.com/what3words/w3w-python-wrapper
+Author: What3Words
+Author-email: support@what3words.com
+License: MIT
+Keywords: what3words geocoder
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Libraries
+Requires-Dist: requests (>=2.5.3)
+
+UNKNOWN
+
+
