@@ -26,5 +26,8 @@ class utils:
     
     def mean(list):
         return mn(list)
+    
+    def percentRange(range, float):
+        return ((max(range) - min(range)) * float) + min(range)
        
        

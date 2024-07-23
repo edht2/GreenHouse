@@ -22,10 +22,10 @@ window_top3 = Acctuator([28, 27], 60)
 window_top4 = Acctuator([30, 19], 60)
 window_top5 = Acctuator([32, 31], 60)
 cz1 = ClimateZone(
-    [bed1, bed2, bed3, bed4, bed5, bed6],
-    [window_top1, window_top2, window_top3, window_top4, window_top5],
-    [window_side1, window_side2, window_side3, window_side4, window_side5],
-    1)
+    beds=[bed1, bed2, bed3, bed4, bed5, bed6],
+    top_windows=[window_top1, window_top2, window_top3, window_top4, window_top5],
+    side_windows=[window_side1, window_side2, window_side3, window_side4, window_side5],
+    climateZoneNumber=1)
 
 # climateZone2
 bed6 = Bed(None, Solenoid(39))
@@ -39,9 +39,9 @@ window_top1 = Acctuator([8, 7], 60)
 window_top2 = Acctuator([10, 9], 60)
 window_top3 = Acctuator([12, 11], 60)
 cz2 = ClimateZone(
-    [bed6, bed7, bed8],
-    [window_top1, window_top2, window_top3],
-    [window_side1, window_side2],
-    2)
+    beds=[bed6, bed7, bed8],
+    top_windows=[window_top1, window_top2, window_top3],
+    side_windows=[window_side1, window_side2],
+    climateZoneNumber=2)
 
 czs = [cz1, cz2]

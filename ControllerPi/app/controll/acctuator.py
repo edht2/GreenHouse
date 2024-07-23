@@ -7,8 +7,10 @@ class Acctuator:
 	def __init__(self, relay_indexes, extension_time):
 		self.extension_time = extension_time
 		self.relays = relay_indexes
-		self.state = 0 # we don't know what state it is in. but we can assume that it is retracted
 		# first relay in sequence is the dominant ( turn it on - the acctuator will extend )
+		self.state = 0
+		self.retract()
+		
 	
     # I have a seperate fire and forget decorator for the relays allowing togglable asyncronousity
 	def fire_and_forget(f):
