@@ -22,5 +22,6 @@ def get_sensor_o_dict():
             }
         },
         'RH%' : 65,
-        'C02%': 0.2
+        'C02%': 0.2,
+        'TEMPC' : 21
     }

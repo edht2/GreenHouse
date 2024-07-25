@@ -10,6 +10,8 @@ bed3 = Bed(None, Solenoid(35))
 bed4 = Bed(None, Solenoid(36))
 bed5 = Bed(None, Solenoid(37))
 bed6 = Bed(None, Solenoid(38))
+heating_solenoid = Solenoid(39)
+misting_solenoid = Solenoid(40)
 
 window_side1 = Acctuator([14, 13], 60)
 window_side2 = Acctuator([16, 15], 60)
@@ -25,12 +27,16 @@ cz1 = ClimateZone(
     beds=[bed1, bed2, bed3, bed4, bed5, bed6],
     top_windows=[window_top1, window_top2, window_top3, window_top4, window_top5],
     side_windows=[window_side1, window_side2, window_side3, window_side4, window_side5],
+    heating_solenoid=heating_solenoid,
+    misting_solenoid=misting_solenoid,
     climateZoneNumber=1)
 
 # climateZone2
-bed6 = Bed(None, Solenoid(39))
-bed7 = Bed(None, Solenoid(40))
-bed8 = Bed(None, Solenoid(41))
+bed6 = Bed(None, Solenoid(41))
+bed7 = Bed(None, Solenoid(42))
+bed8 = Bed(None, Solenoid(43))
+heating_solenoid = Solenoid(44)
+misting_solenoid = Solenoid(45)
 
 window_side1 = Acctuator([2, 1], 60)
 window_side2 = Acctuator([4, 3], 60)
@@ -42,6 +48,8 @@ cz2 = ClimateZone(
     beds=[bed6, bed7, bed8],
     top_windows=[window_top1, window_top2, window_top3],
     side_windows=[window_side1, window_side2],
+    heating_solenoid=heating_solenoid,
+    misting_solenoid=misting_solenoid,
     climateZoneNumber=2)
 
 czs = [cz1, cz2]

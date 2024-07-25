@@ -21,10 +21,13 @@ def read_cfg():
     cfg = []
     
     for line in cfg_raw:
-        line = line.split(":")
-        line_data = line[1].split()
-        line_title = line[0]
-        cfg.append(line_data)
+        try:
+            line = line.split(":")
+            line_data = line[1].strip()
+            line_title = line[0].strip()
+            cfg.append(line_data)
+        except:
+            break
     return cfg
 
 def mqttBrokerAddr():
