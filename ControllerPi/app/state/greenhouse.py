@@ -4,12 +4,12 @@ from app.controll.solenoid import Solenoid
 from app.controll.acctuator import Acctuator
 
 # climateZone1
-bed1 = Bed(None, Solenoid(33))
-bed2 = Bed(None, Solenoid(34))
-bed3 = Bed(None, Solenoid(35))
-bed4 = Bed(None, Solenoid(36))
-bed5 = Bed(None, Solenoid(37))
-bed6 = Bed(None, Solenoid(38))
+bed1 = Bed(Solenoid(33), 1, 1)
+bed2 = Bed(Solenoid(34), 2, 1)
+bed3 = Bed(Solenoid(35), 3, 1)
+bed4 = Bed(Solenoid(36), 4, 1)
+bed5 = Bed(Solenoid(37), 5, 1)
+bed6 = Bed(Solenoid(38), 6, 1)
 heating_solenoid = Solenoid(39)
 misting_solenoid = Solenoid(40)
 
@@ -32,9 +32,9 @@ cz1 = ClimateZone(
     climateZoneNumber=1)
 
 # climateZone2
-bed6 = Bed(None, Solenoid(41))
-bed7 = Bed(None, Solenoid(42))
-bed8 = Bed(None, Solenoid(43))
+bed6 = Bed(Solenoid(41), 1, 2)
+bed7 = Bed(Solenoid(42), 2, 2)
+bed8 = Bed(Solenoid(43), 3, 2)
 heating_solenoid = Solenoid(44)
 misting_solenoid = Solenoid(45)
 

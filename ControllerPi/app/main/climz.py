@@ -5,7 +5,7 @@ from app.extensions.log import log
 class ClimateZone:
     def __init__(self, beds, top_windows, side_windows, heating_solenoid, misting_solenoid, climateZoneNumber, mqttTopic='SYS/climateZone'):
         self.no:int = climateZoneNumber
-        self.mqttTopic:str = mqttTopic + climateZoneNumber
+        self.mqttTopic:str = f"mqttTopic{climateZoneNumber}"
         self.beds:list = beds
         self.twin:list = top_windows
         self.swin:list = side_windows

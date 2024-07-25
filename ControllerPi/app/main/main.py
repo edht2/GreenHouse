@@ -10,10 +10,12 @@ class Main:
         self.mqttBrokerAddr = mqttBrokerAddr
         self.tickFrequency = tickFrequency
         self.climateZones = czs
-    
-    @utils.fire_and_forget
+        self.main()
+
+
     # this works asyncronously to the rest of the programme
     def main(self):
-        for climateZone in self.climateZones:
-            climateZone.tick()
-        sleep(self.tickFrequency())
+        while True:
+            for climateZone in self.climateZones:
+                climateZone.tick()
+            sleep(self.tickFrequency())
