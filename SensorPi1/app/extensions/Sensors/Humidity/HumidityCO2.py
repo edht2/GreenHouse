@@ -7,15 +7,15 @@ class HumidityCO2:
 		self.scd30.set_measurement_interval(2)
 		self.scd30.start_periodic_measurement()
 
-	def read(self):
-		time.sleep(2) # we must wait for a measurement
+	def takeReading(self):
 		if self.scd30.get_data_ready():
 			m = self.scd30.read_measurement()
 			if m is not None:
 				return m
 			else:
 				time.sleep(0.2)
-				return read()
+				return self.takeReading()
+			
 	def stop(self):
 		self.sd30.stop_periodic_measurements()
 		# if we want to stop the sensor you can!

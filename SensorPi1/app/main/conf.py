@@ -14,10 +14,10 @@ def mqttBrokerAddr():
     return read_cfg()[0][0]
 
 def climateZone():
-    return read_cfg()[1][0]
+    return int(read_cfg()[1][0])
 
 def sendFrequency():
-    return read_cfg()[2][0]
+    return int(read_cfg()[2][0])
 
 from app.extensions.log import log
 

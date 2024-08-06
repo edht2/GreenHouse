@@ -1,28 +1,19 @@
 from app.main.conf import climateZone
-from app.state import chirpSensors, Humidity
-
-def get_sensor_o_json():
-    pass
+from app.state import chirpSensors, SCD30_humco2
 
 def get_sensor_o_dict():
-    return {
+    scd30_data = SCD30_humco2.takeReading()
+    csens = []
+    for csen in chirpSensors:
+        csens.append(csen.takeReading())
+
+    return str({
         'climateZone' : climateZone(),
         'chirpSensors' : {
-            'sen1' : {
-                'acc' : 300,
-                'float' : 70
-                # ~70% water detected
-            },
-            'sen2' : {
-                'acc' : 290,
-                'float' : 60
-            },
-            'sen3' : {
-                'acc' : 320,
-                'float' : 96
-            }
+            str(csens)
         },
-        'RH%' : 65,
-        'C02%': 0.2,
-        'TEMPC' : 21
-    }
+        'RH%'   : round(scd30_data[2]),
+        'C02%'  : round(scd30_data[0]/10000, 3),
+        'C02ppm': round(scd30_data[0]),
+        'TEMPC' : round(scd30_data[1], 1)
+    })

@@ -26,7 +26,7 @@ class log:
         
         self.msg = f"@{device} {c}{p1}{p2}"
         from app.extensions.mqtt import pub
-        pub.publish(f'SYS/log', log)
+        pub.publish(f'SYS/log', self.msg)
         # send the log to the sever
         
         print(self.msg.expandtabs(18))

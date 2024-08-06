@@ -2,7 +2,7 @@ from app.extensions.Sensors.Chirp.chirpSensor import ChirpSensor
 from app.extensions.Sensors.Humidity.HumidityCO2 import HumidityCO2
 import time
 
-calcfg = open("calibration.txt", "r")
+calcfg = open("app/extensions/Sensors/Chirp/calibration.txt", "r")
 lines = calcfg.readlines()
 
 chirpSensor1 = ChirpSensor(address=0x34, no=1, min_moist=int(lines[0].strip().split()[0]), max_moist=int(lines[0].strip().split()[1]))
@@ -12,7 +12,7 @@ chirpSensor4 = ChirpSensor(address=0x31, no=4, min_moist=int(lines[3].strip().sp
 chirpSensor5 = ChirpSensor(address=0x30, no=5, min_moist=int(lines[4].strip().split()[0]), max_moist=int(lines[4].strip().split()[1]))
 chirpSensors = [chirpSensor1, chirpSensor2, chirpSensor3, chirpSensor4, chirpSensor5]
 
-humidity = HumidityCO2()
+SCD30_humco2 = HumidityCO2()
 
 def calibrateSensors():
     for i in range(len(chirpSensors)):
