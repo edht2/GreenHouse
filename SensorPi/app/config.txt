@@ -1,3 +1,0 @@
-mqttBrokerAddr: mqtt.eclipseprojects.io
-climateZone: 1
-sendFrequency: 10
