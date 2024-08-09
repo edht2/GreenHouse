@@ -12,7 +12,6 @@ class Main:
         self.climateZones = czs
         self.main()
 
-
     # this works asyncronously to the rest of the programme
     def main(self):
         while True:

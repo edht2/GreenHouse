@@ -5,24 +5,27 @@ from app.main.conf import tickFrequency
 from app.extensions.log import log
 
 class SM:
-    def __init__(self):
+    def __init__(self, targetMoistureRange, chirpSensorI2CAddress):
         """ SM class is a watering method - the default one (also the best).
         This reads the soil's moisture content and waters it accoringly, very simple! """
         self.watering = True
+        # watering:bool will determine if it should water until the soil moisture is at the top of the range
+        self.targetMoistureRange = targetMoistureRange
+        self.chirpSensorI2CAddress = chirpSensorI2CAddress
+        # we will not need the chirp sensor I2C address for tick, but more as just storing the value
     
-    def tick(self, wateringSolenoid, moistureRange, soilMoistureSensorFloat):
-        if moistureRange[0] > soilMoistureSensorFloat:
-            if wateringSolenoid.state == 0:
-		# too dry and not being watered
-                wateringSolenoid.open(tickFrequency())
-                self.watering = True
-                # enable watering for 30 seconds, or what ever tickFrequency() -> ? is
-                return True
-        elif watering:
-            if moistureRange[1] < soilMoistureSensorFloat:
+    def tick(self, soilMoistureSensorPercent):
+        if self.watering:
+            # if we are topping up the bed
+            if soilMoistureSensorPercent > self.targetMoistureRange[1]:
                 self.watering = False
-            else:
-                wateringSolenoid.open(tickFrequency())
-        else:
-            # otherwise it is fine :)!
-            return False
+                return False
+            return True
+
+        elif soilMoistureSensorPercent < self.targetMoistureRange[0]:
+		    # too dry and not being watered
+            self.watering = True
+            return True
+            
+        
+            

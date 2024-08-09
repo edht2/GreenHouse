@@ -1,55 +1,76 @@
 from app.main.bed import Bed
-from app.main.climz import ClimateZone
+from app.main.ClimateZone import ClimateZone
 from app.controll.solenoid import Solenoid
 from app.controll.acctuator import Acctuator
+from app.wateringMethods.soilmoisture import SM
+from app.extensions.log import log
+from app.extensions.mqtt import pub, sub
+from json import loads
 
-# climateZone1
-bed1 = Bed(Solenoid(33), 1, 1)
-bed2 = Bed(Solenoid(34), 2, 1)
-bed3 = Bed(Solenoid(35), 3, 1)
-bed4 = Bed(Solenoid(36), 4, 1)
-bed5 = Bed(Solenoid(37), 5, 1)
-bed6 = Bed(Solenoid(38), 6, 1)
-heating_solenoid = Solenoid(39)
-misting_solenoid = Solenoid(40)
+setupJSONstring = open("app/state/state.json").read()
+setupDict = loads(setupJSONstring)
 
-window_side1 = Acctuator([14, 13], 60)
-window_side2 = Acctuator([16, 15], 60)
-window_side3 = Acctuator([18, 17], 60)
-window_side4 = Acctuator([20, 19], 60)
-window_side5 = Acctuator([22, 21], 60)
-window_top1 = Acctuator([24, 23], 60)
-window_top2 = Acctuator([26, 24], 60)
-window_top3 = Acctuator([28, 27], 60)
-window_top4 = Acctuator([30, 19], 60)
-window_top5 = Acctuator([32, 31], 60)
-cz1 = ClimateZone(
-    beds=[bed1, bed2, bed3, bed4, bed5, bed6],
-    top_windows=[window_top1, window_top2, window_top3, window_top4, window_top5],
-    side_windows=[window_side1, window_side2, window_side3, window_side4, window_side5],
-    heating_solenoid=heating_solenoid,
-    misting_solenoid=misting_solenoid,
-    climateZoneNumber=1)
+greenhouse = []
+# greenhouse[0].beds[0].wateringMethod.soilMoistureFloat = new data
 
-# climateZone2
-bed6 = Bed(Solenoid(41), 1, 2)
-bed7 = Bed(Solenoid(42), 2, 2)
-bed8 = Bed(Solenoid(43), 3, 2)
-heating_solenoid = Solenoid(44)
-misting_solenoid = Solenoid(45)
+for climateZone in setupDict['climateZones']:
+    # for each climate zone
 
-window_side1 = Acctuator([2, 1], 60)
-window_side2 = Acctuator([4, 3], 60)
-window_side3 = Acctuator([6, 5], 60)
-window_top1 = Acctuator([8, 7], 60)
-window_top2 = Acctuator([10, 9], 60)
-window_top3 = Acctuator([12, 11], 60)
-cz2 = ClimateZone(
-    beds=[bed6, bed7, bed8],
-    top_windows=[window_top1, window_top2, window_top3],
-    side_windows=[window_side1, window_side2],
-    heating_solenoid=heating_solenoid,
-    misting_solenoid=misting_solenoid,
-    climateZoneNumber=2)
+    beds = []
+    sideWindowAcctuators = []
+    topWindowAcctuators = []
 
-czs = [cz1, cz2]
+    for bed in climateZone['Beds']:
+        # for each bed
+        beds.append(Bed(
+            wateringMethod=SM(targetMoistureRange=bed['bedMoistureRange']),
+            wateringSolenoid=Solenoid(bed['wateringSolenoidRelayIndex']),
+            climateZoneNumber=climateZone['climateZoneNumber'],
+            bedNumber=bed['bedNumber'])
+            ) # make a bed object
+        
+    for swin in climateZone['sideWindows']:
+        # for every side window!
+        sideWindowAcctuators.append(Acctuator(
+            relayIndexes=[swin['acctuatorRelayIndexExtend'], swin['acctuatorRelayIndexRetract']],
+            extensionTime=60))
+        
+    for twin in climateZone['topWindows']:
+        # for every top window!
+        topWindowAcctuators.append(Acctuator(
+            relayIndexes=[twin['acctuatorRelayIndexExtend'], twin['acctuatorRelayIndexRetract']],
+            extensionTime=60))
+    
+    greenhouse.append(ClimateZone(
+        beds=beds,
+        topWindows=topWindowAcctuators,
+        sideWindows=sideWindowAcctuators,
+        heatingSolenoid=climateZone['heatingSolenoidRelayIndex'],
+        mistingSolenoid=climateZone['mistingSolenoidRelayIndex'],
+        climateZoneNumber=climateZone['climateZoneNumber'],
+        extremeTemperatureRange=climateZone['extremeTemperatureRange'],
+        relativeHumidityRange=climateZone['targetHumidity%'],
+        co2ppmMin=climateZone['minimumTargetCO2%']))
+    
+def onConfigRequest(data:str):
+    # the request will look something like "climateZone : 1"
+    try:
+        climateZoneNumber = int(data.split(':')[1].strip())
+        # the climate zone number has been extracted!
+        
+        # now I must turn all of the bed objects into a string parsable json!
+        bed_list = []
+        for bed in beds:
+            bed_dict = {
+                "chirpSensorI2CAddress" : bed.
+                "chirpSensorCalibration"
+                "wateringSolenoidRelayIndex"
+                "bedMoistureRange"
+                "bedNumber"
+            }
+
+
+        pub.publish()
+
+    except error as e:
+        log('ControllerPi', False, 'configuration', 'mqtt', 'Incompatible format request message: ', arg=data, error=e)

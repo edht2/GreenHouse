@@ -3,15 +3,16 @@ from app.extensions.utils import utils
 from app.extensions.log import log
 
 class ClimateZone:
-    def __init__(self, beds, top_windows, side_windows, heating_solenoid, misting_solenoid, climateZoneNumber, mqttTopic='SYS/climateZone'):
+    def __init__(self, beds, topWindows, sideWindows, heatingSolenoid, mistingSolenoid, climateZoneNumber, temperatureRange, relativeHumidityRange, minimumTargetCO2percent):
         self.no:int = climateZoneNumber
         self.mqttTopic:str = f"mqttTopic{climateZoneNumber}"
         self.beds:list = beds
-        self.twin:list = top_windows
-        self.swin:list = side_windows
-        
-        self.heating_solenoid = heating_solenoid
-        self.misting_solenoid = misting_solenoid
+
+        # relay controlled
+        self.twin:list = topWindows
+        self.swin:list = sideWindows
+        self.heatingSolenoid = heatingSolenoid
+        self.mistingSolenoid = mistingSolenoid
                 
         # data
         self.relativeHumidity:int = None
@@ -19,9 +20,9 @@ class ClimateZone:
         self.tempC:int = None
         
         # targets
-        self.tempC_range = [10, 30]
-        self.rh_range = [0, 1]
-        self.co2ppm_min = 100
+        self.temperatureRange = temperatureRange
+        self.relativeHumidityRange = relativeHumidityRange
+        self.minimumTargetCO2percent = minimumTargetCO2percent
         
         self.isCold = False
         self.isHot = False
@@ -59,25 +60,25 @@ class ClimateZone:
                         | Alert! too cold
                         """
         # temp managment
-        if self.tempC < utils.mean(self.tempC_range): # if it is colder than half way 
-            if self.tempC_range[0] > self.tempC:
+        if self.tempC < utils.mean(self.temperatureRange): # if it is colder than half way 
+            if self.temperatureRange[0] > self.tempC:
                 # MAGOR PROBLEM TOO COLD
                 # alert!!!
                 pass
             
-            elif utils.percentRange(self.tempC_range, 0.05) >= self.tempC:
+            elif utils.percentRange(self.temperatureRange, 0.05) >= self.tempC:
                 # if it is below / on 5% allowed temp this is cold we must heat it up!
                 self.heating_solenoid.open() # We allow flow through the radiator
                 # if this doesn't work there will be problems!!
             
-            elif utils.percentRange(self.tempC_range, 0.2) >= self.tempC:
+            elif utils.percentRange(self.temperatureRange, 0.2) >= self.tempC:
                 # if it is below 20% allowed temp starting to get cold
                 for window_acctuator in self.swin:
                     if window_acctuator.state == 1:
                         window_acctuator.retract()
                         # close any open top_windows
                         
-            elif utils.percentRange(self.tempC_range, 0.4) >= self.tempC:
+            elif utils.percentRange(self.temperatureRange, 0.4) >= self.tempC:
                 # if it is below 40% allowed temp
                 self.heating_solenoid.close()
                 self.isCold = True
@@ -85,19 +86,19 @@ class ClimateZone:
                     if window_acctuator.state == 1:
                         window_acctuator.retract()
                         # close any open top_windows                
-        if self.tempC > utils.mean(self.tempC_range): # if it is hotter than half way 
-            if self.tempC_range[1] < self.tempC:
+        if self.tempC > utils.mean(self.temperatureRange): # if it is hotter than half way 
+            if self.temperatureRange[1] < self.tempC:
                 # MAGOR PROBLEM TOO HOT
                 # alert!!!
                 pass
             
-            elif utils.percentRange(self.tempC_range, 0.95) <= self.tempC:
+            elif utils.percentRange(self.temperatureRange, 0.95) <= self.tempC:
                 # if it is above 95% allowed temp this is hot!
                 self.misting_solenoid.open()
                 # the misting solenoid should do the trick as when water evaporates it cools down
                 
             
-            elif utils.percentRange(self.tempC_range, 0.8) <= self.tempC:
+            elif utils.percentRange(self.temperatureRange, 0.8) <= self.tempC:
                 # if it is below 20% allowed temp starting to sweat
                 self.misting_solenoid.close()
                 for window_acctuator in self.twin:
@@ -105,7 +106,7 @@ class ClimateZone:
                         window_acctuator.extend()
                         # close any open top_windows
                         
-            elif utils.percentRange(self.tempC_range, 0.6) <= self.tempC:
+            elif utils.percentRange(self.temperatureRange, 0.6) <= self.tempC:
                 # if it is above 60% allowed temp. warm!
                 self.isHot = True
                 for window_acctuator in self.swin:
@@ -114,7 +115,7 @@ class ClimateZone:
                         # close any open top_windows                        
             
         # humidity reg.
-        if self.relativeHumidity < utils.mean(self.rh_range): # if it is less humid 
+        if self.relativeHumidity < utils.mean(self.relativeHumidityRange): # if it is less humid 
             if utils.percentRange(self.relativeHumidity, 0.2) < self.relativeHumidity:
                 # humidity is low
                 if not (self.isHot or self.isCold):
@@ -122,7 +123,7 @@ class ClimateZone:
                     we would do this as a portion of the sprayed water would evapourate
                     and thus increase the humidity. """
                     self.misting_solenoid.open()      
-        if self.relativeHumidity > utils.mean(self.rh_range):
+        if self.relativeHumidity > utils.mean(self.relativeHumidityRange):
             if utils.percentRange(self.relativeHumidity, 0.8) > self.relativeHumidity:
                 # humidity is high
                 if not (self.isHot or self.isCold):

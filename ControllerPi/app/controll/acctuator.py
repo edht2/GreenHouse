@@ -4,9 +4,9 @@ import asyncio
 import time
 
 class Acctuator:
-	def __init__(self, relay_indexes, extension_time):
-		self.extension_time = extension_time
-		self.relays = relay_indexes
+	def __init__(self, relayIndexes, extensionTime):
+		self.extension_time = extensionTime
+		self.relays = relayIndexes
 		# first relay in sequence is the dominant ( turn it on - the acctuator will extend )
 		self.state = 0
 		self.retract()
