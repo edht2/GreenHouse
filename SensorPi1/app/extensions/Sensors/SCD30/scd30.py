@@ -1,9 +1,9 @@
 import time
-from scd30_i2c import SCD30
+from scd30_i2c import SCD30 as SCD30driver
 
-class HumidityCO2:
+class SCD30:
 	def __init__(self):
-		self.scd30 = SCD30()
+		self.scd30 = SCD30driver()
 		self.scd30.set_measurement_interval(2)
 		self.scd30.start_periodic_measurement()
 
@@ -17,5 +17,5 @@ class HumidityCO2:
 				return self.takeReading()
 			
 	def stop(self):
-		self.sd30.stop_periodic_measurements()
+		self.scd30.stop_periodic_measurements()
 		# if we want to stop the sensor you can!

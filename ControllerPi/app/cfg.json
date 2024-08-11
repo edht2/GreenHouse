@@ -1,4 +1,5 @@
 {
     "mqttBrokerAddr" : "mqtt.eclipseprojects.io",
-    "tickFrequency" : 30
+    "tickFrequency" : 30,
+    "sensorReadFrequency" : 10
 }

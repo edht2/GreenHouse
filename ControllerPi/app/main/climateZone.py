@@ -5,7 +5,7 @@ from app.extensions.log import log
 class ClimateZone:
     def __init__(self, beds, topWindows, sideWindows, heatingSolenoid, mistingSolenoid, climateZoneNumber, temperatureRange, relativeHumidityRange, minimumTargetCO2percent):
         self.no:int = climateZoneNumber
-        self.mqttTopic:str = f"mqttTopic{climateZoneNumber}"
+        self.mqttTopic:str = f"SYS/climateZone{climateZoneNumber}"
         self.beds:list = beds
 
         # relay controlled

@@ -1,4 +1,4 @@
-from app.main.conf import climateZone
+from app.main.configuration import cfg
 from app.state import chirpSensors, SCD30_humco2
 
 def get_sensor_o_dict():
@@ -8,10 +8,8 @@ def get_sensor_o_dict():
         csens.append(csen.takeReading())
 
     return str({
-        'climateZone' : climateZone(),
-        'chirpSensors' : {
-            str(csens)
-        },
+        'climateZone' : cfg["climateZone"],
+        'chirpSensors' : str(csens),
         'RH%'   : round(scd30_data[2]),
         'C02%'  : round(scd30_data[0]/10000, 3),
         'C02ppm': round(scd30_data[0]),

@@ -1,4 +1,0 @@
-mqttBrokerAddr: mqtt.eclipseprojects.io
-tickFrequency: 30
-sensorSendFrequency: 10
-    

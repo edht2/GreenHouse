@@ -1,6 +1,6 @@
 from app.extensions.log import log
 from app.extensions.utils import utils
-from app.main.conf import cfg
+from app.main.configuration import cfg
 
 class Bed:
     def __init__(self, wateringMethod, wateringSolendoid, climateZoneNumber, bedNumber):
