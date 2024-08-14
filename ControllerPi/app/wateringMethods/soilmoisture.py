@@ -14,17 +14,19 @@ class SM:
         self.soilMoistureSensorPercent = None
     
     def tick(self):
-        if self.watering:
-            # if we are topping up the bed
-            if soilMoistureSensorPercent > self.targetMoistureRange[1]:
-                self.watering = False
-                return False
-            return True
+        if self.soilMoistureSensorPercent:
+            if self.watering:
+                # if we are topping up the bed
+                if self.soilMoistureSensorPercent > self.targetMoistureRange[1]:
+                    self.watering = False
+                    return False
+                return True
 
-        elif soilMoistureSensorPercent < self.targetMoistureRange[0]:
-		    # too dry and not being watered
-            self.watering = True
-            return True
-            
+            elif self.soilMoistureSensorPercent < self.targetMoistureRange[0]:
+		# too dry and not being watered
+                self.watering = True
+                return True
+        else:
+            log("ControllerPi", "WARN", "wateringmethod", "soilmoisture", "watering method soilmoisture has been deprecated by a lack of sensor data")
         
             

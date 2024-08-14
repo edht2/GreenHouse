@@ -12,30 +12,30 @@ setupDict = loads(setupJSONstring)
 GREENHOUSE = []
 # greenhouse[0].beds[0].wateringMethod.soilMoistureFloat = new data
 
-for climateZone in setupDict['climateZones']:
+for cz in setupDict['climateZones']:
     # for each climate zone
 
     beds = []
     sideWindowAcctuators = []
     topWindowAcctuators = []
 
-    for bed in climateZone['beds']:
+    for bed in cz['Beds']:
         # for each bed
         beds.append(Bed(
             wateringMethod=SM(targetMoistureRange=bed['bedMoistureRange'],chirpSensorI2CAddress=bed["chirpSensorI2CAddress"], chirpSensorCalibration=bed["chirpSensorCalibration"]),
             wateringSolenoid=Solenoid(bed['wateringSolenoidRelayIndex']),
-            climateZoneNumber=climateZone['climateZoneNumber'],
+            climateZoneNumber=cz['climateZoneNumber'],
             bedNumber=bed['bedNumber'],
             MQTTtopic=bed['MQTTtopic'])
             ) # make a bed object
         
-    for swin in climateZone['sideWindows']:
+    for swin in cz['sideWindows']:
         # for every side window!
         sideWindowAcctuators.append(Acctuator(
             relayIndexes=[swin['acctuatorRelayIndexExtend'], swin['acctuatorRelayIndexRetract']],
             extensionTime=60))
         
-    for twin in climateZone['topWindows']:
+    for twin in cz['topWindows']:
         # for every top window!
         topWindowAcctuators.append(Acctuator(
             relayIndexes=[twin['acctuatorRelayIndexExtend'], twin['acctuatorRelayIndexRetract']],
@@ -45,12 +45,13 @@ for climateZone in setupDict['climateZones']:
         beds=beds,
         topWindows=topWindowAcctuators,
         sideWindows=sideWindowAcctuators,
-        heatingSolenoid=climateZone['heatingSolenoidRelayIndex'],
-        mistingSolenoid=climateZone['mistingSolenoidRelayIndex'],
-        climateZoneNumber=climateZone['climateZoneNumber'],
-        extremeTemperatureRange=climateZone['extremeTemperatureRange'],
-        relativeHumidityRange=climateZone['targetHumidity%'],
-        co2ppmMin=climateZone['minimumTargetCO2%']))
+        heatingSolenoid=cz['heatingSolenoidRelayIndex'],
+        mistingSolenoid=cz['mistingSolenoidRelayIndex'],
+        climateZoneNumber=cz['climateZoneNumber'],
+        extremeTemperatureRange=cz['extremeTemperatureRange'],
+        relativeHumidityRange=cz['targetHumidity%'],
+        minimumTargetCO2percent=cz['minimumTargetCO2%'],
+        SCD30sensorMqttTopic=cz['SCD30sensorMqttTopic']))
     
 def onConfigRequest(data:str):
     # the request will look something like "climateZone : 1"
@@ -60,7 +61,7 @@ def onConfigRequest(data:str):
         GREENHOUSE[climateZoneNumber-1]
         # now I must turn all of the bed objects into a string parsable json!
         bedList = []
-        for bed in GREENHOUSE[climateZoneNumber-1]['beds']:
+        for bed in GREENHOUSE.greenhouse[climateZoneNumber-1]['Beds']:
             bedDict = {
                 "chirpSensorI2CAddress" : bed.wateringMethod.chirpSensorI2CAddress if bed.wateringMethod.__class__ == SM else None,
                 "chirpSensorCalibration" : bed.wateringMethod.chirpSensorCalibration if bed.wateringMethod.__class__ == SM else None,

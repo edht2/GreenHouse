@@ -15,7 +15,7 @@ class log:
             # if it is in progress:
             c = f'[....] '
         elif type(outcome) == str:
-            c = f'[ {outcome} ]'
+            c = f'[ {outcome} ] '
             
         if error != '':
             error = f'( {Fore.MAGENTA}{error}{Style.RESET_ALL} )'

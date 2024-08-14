@@ -13,6 +13,6 @@ class GreenHouse:
     # this works asyncronously to the rest of the programme
     def main(self):
         while True:
-            for climateZone in self.greenhouse["climateZones"]:
+            for climateZone in self.greenhouse:
                 climateZone.tick()
-            sleep(self.tickFrequency())
+            sleep(self.tickFrequency)

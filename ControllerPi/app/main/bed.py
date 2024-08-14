@@ -25,7 +25,7 @@ class Bed:
         self.bedTemperature = data["temperatureReading"]
 
     def tick(self):
-        if self.wateringMethod.tick(self.soilMoisturePercent):
+        if self.wateringMethod.tick():
             # if the wateringMethod belives we should water the plant, do!
             self.wateringSolenoid.open(seconds=cfg['tickFrequency'])
             return log('ControllerPi', None, 'bed', 'wateringsolenoid', 'Opened the watering solenoids ', arg=f'climateZone:{self.czno}@bed{self.no}')
