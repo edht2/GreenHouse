@@ -23,14 +23,19 @@ class Solenoid:
 
     @fire_and_forget
     def open(self, seconds=None, asynchronous=True):
-        relay.turn_on_relay_by_index(self.relayIndex)
+        print("Opening solenoid on relay", self.relayIndex)
+        #relay.turn_on_relay_by_index(self.relayIndex)
+        self.state = 1
         log('ControllerPi', True, 'controll', 'solenoid', 'Opened watering solenoid for {time} seconds on relay', arg=self.relayIndex)
         if type(seconds) == int:
             sleep(seconds)
-            relay.turn_off_relay_by_index(self.relayIndex)
+            print("Closing solenoid on relay", self.relayIndex, "after", seconds, "seconds open")
+            #relay.turn_off_relay_by_index(self.relayIndex)
+            self.state = 0
             # finnish by closing the solenoid after waiting the requested time
 
     @fire_and_forget
     def close(self, seconds=None, asynchronous=True):
         relay.turn_off_relay_by_index(self.relayIndex)
+        self.state = 0
         log('ControllerPi', True, 'controll', 'solenoid', 'Closed watering solenoid for {time} seconds on relay', arg=self.relayIndex)

@@ -25,7 +25,8 @@ for climateZone in setupDict['climateZones']:
             wateringMethod=SM(targetMoistureRange=bed['bedMoistureRange'],chirpSensorI2CAddress=bed["chirpSensorI2CAddress"], chirpSensorCalibration=bed["chirpSensorCalibration"]),
             wateringSolenoid=Solenoid(bed['wateringSolenoidRelayIndex']),
             climateZoneNumber=climateZone['climateZoneNumber'],
-            bedNumber=bed['bedNumber'])
+            bedNumber=bed['bedNumber'],
+            MQTTtopic=bed['MQTTtopic'])
             ) # make a bed object
         
     for swin in climateZone['sideWindows']:
@@ -63,7 +64,8 @@ def onConfigRequest(data:str):
             bedDict = {
                 "chirpSensorI2CAddress" : bed.wateringMethod.chirpSensorI2CAddress if bed.wateringMethod.__class__ == SM else None,
                 "chirpSensorCalibration" : bed.wateringMethod.chirpSensorCalibration if bed.wateringMethod.__class__ == SM else None,
-                "bedNumber" : bed.no
+                "bedNumber" : bed.no,
+                "MQTTtopic" : bed.MQTTtopic
             }
             bedList.append(bedDict)
         

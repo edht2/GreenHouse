@@ -11,8 +11,9 @@ class SM:
         self.chirpSensorI2CAddress = chirpSensorI2CAddress
         self.chirpSensorCalibration = chirpSensorCalibration
         # we will not need the chirp sensor I2C address for tick nor the calibnration, but more as just storing the value
+        self.soilMoistureSensorPercent = None
     
-    def tick(self, soilMoistureSensorPercent):
+    def tick(self):
         if self.watering:
             # if we are topping up the bed
             if soilMoistureSensorPercent > self.targetMoistureRange[1]:

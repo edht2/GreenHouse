@@ -1,9 +1,10 @@
 from app.extensions.mqtt import sub
 from app.extensions.utils import utils
 from app.extensions.log import log
+from json import dump
 
 class ClimateZone:
-    def __init__(self, beds, topWindows, sideWindows, heatingSolenoid, mistingSolenoid, climateZoneNumber, temperatureRange, relativeHumidityRange, minimumTargetCO2percent):
+    def __init__(self, beds, topWindows, sideWindows, heatingSolenoid, mistingSolenoid, climateZoneNumber, temperatureRange, relativeHumidityRange, minimumTargetCO2percent, SCD30sensorMqttTopic):
         self.no:int = climateZoneNumber
         self.mqttTopic:str = f"SYS/climateZone{climateZoneNumber}"
         self.beds:list = beds
@@ -18,6 +19,7 @@ class ClimateZone:
         self.relativeHumidity:int = None
         self.CO2ppm:int = None
         self.tempC:int = None
+        self.SCD30sensorMqttTopic = SCD30sensorMqttTopic
         
         # targets
         self.temperatureRange = temperatureRange
@@ -28,18 +30,18 @@ class ClimateZone:
         self.isHot = False
 
         #finnish contructing the class
-        self.setupAsncDataRecorder()
-    
-    @utils.fire_and_forget
-    def setupAsncDataRecorder(self):
-        def on_data_received(data):
-            for bed in self.beds:
-                bed.soilMoistureSensorFloat = data['chirpSensors'][f'sen{self.beds.index(bed)+1}']['float'] 
-            self.relativeHumidity = data['RH']
-            self.CO2ppm = data['CO2']
-            log('ControllerPi', True, 'climatezone', 'sensordata', 'Recived sensor data for ', arg=f'climateZone{self.no}')
-    
-        sub.subscribe(self.mqttTopic, on_data_received)
+        
+    def onSCD30packetArival(self, data):
+        data = dump(data)
+        # make the string a python dictionary!
+        if data["status"] == "ER":
+            # error!! safe mode.
+            pass
+        else:
+            self.relativeHumidity = data["humidityReading"]
+            self.CO2ppm = data["CO2ppmReading"]
+            self.tempC = data["temperatureReading"]
+                   
         
     def tick(self):
         for bed in self.beds:

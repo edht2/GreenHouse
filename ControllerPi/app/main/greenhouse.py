@@ -3,11 +3,11 @@ from app.extensions.mqtt import pub, sub
 from app.main.configuration import cfg
 from time import sleep
 
-class Main:
-    def __init__(self):
+class GreenHouse:
+    def __init__(self, gh):
         self.mqttBrokerAddr = cfg["mqttBrokerAddr"]
         self.tickFrequency = cfg["tickFrequency"]
-        self.greenhouse
+        self.greenhouse = gh
         self.main()
 
     # this works asyncronously to the rest of the programme

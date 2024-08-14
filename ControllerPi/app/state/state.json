@@ -7,28 +7,32 @@
                     "chirpSensorCalibration" : [200, 500],
                     "wateringSolenoidRelayIndex" : 33,
                     "bedMoistureRange" : [20, 40],
-                    "bedNumber" : 1
+                    "bedNumber" : 1,
+                    "MQTTtopic" : "SYS/climateZone1/bed1"
                 },
                 {
                     "chirpSensorI2CAddress" : "0x31",
                     "chirpSensorCalibration" : [200, 500],
                     "wateringSolenoidRelayIndex" : 34,
                     "bedMoistureRange" : [20, 40],
-                    "bedNumber" : 2
+                    "bedNumber" : 2,
+                    "MQTTtopic" : "SYS/climateZone1/bed2"
                 },
                 {
                     "chirpSensorI2CAddress" : "0x32",
                     "chirpSensorCalibration" : [200, 500],
                     "wateringSolenoidRelayIndex" : 35,
                     "bedMoistureRange" : [20, 40],
-                    "bedNumber" : 3
+                    "bedNumber" : 3,
+                    "MQTTtopic" : "SYS/climateZone1/bed3"
                 },
                 {
                     "chirpSensorI2CAddress" : "0x33",
                     "chirpSensorCalibration" : [200, 500],
                     "wateringSolenoidRelayIndex" : 36,
                     "bedMoistureRange" : [20, 40],
-                    "bedNumber" : 4
+                    "bedNumber" : 4,
+                    "MQTTtopic" : "SYS/climateZone1/bed4"
                 }
             ],
             "sideWindows" : [
@@ -82,7 +86,8 @@
             "minimumTargetCO2%" : 0.01,
             "heatingSolenoidRelayIndex" : 37,
             "mistingSolenoidRelayIndex" : 38,
-            "climateZoneNumber" : 1
+            "climateZoneNumber" : 1,
+            "SCD30sensorMqttTopic" : "scd30"
         },
         {
             "Beds" : [
@@ -91,14 +96,16 @@
                     "chirpSensorCalibration" : [200, 500],
                     "wateringSolenoidRelayIndex" : 39,
                     "bedMoistureRange" : [20, 40],
-                    "bedNumber" : 1
+                    "bedNumber" : 1,
+                    "MQTTtopic" : "SYS/climateZone2/bed1"
                 },
                 {
                     "chirpSensorI2CAddress" : "0x31",
                     "chirpSensorCalibration" : [200, 500],
                     "wateringSolenoidRelayIndex" : 40,
                     "bedMoistureRange" : [20, 40],
-                    "bedNumber" : 2
+                    "bedNumber" : 2,
+                    "MQTTtopic" : "SYS/climateZone2/bed2"
                 }
             ],
             "sideWindows" : [
@@ -135,7 +142,8 @@
             "minimumTargetCO2%" : 0.01,
             "heatingSolenoidRelayIndex" : 41,
             "mistingSolenoidRelayIndex" : 42,
-            "climateZoneNumber" : 2
+            "climateZoneNumber" : 2,
+            "SCD30sensorMqttTopic" : "scd30"
         }
     ]
 }

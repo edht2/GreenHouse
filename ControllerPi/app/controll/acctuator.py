@@ -27,20 +27,24 @@ class Acctuator:
 	
 	@fire_and_forget
 	def extend(self, asynchronous=True):
-		relay.turn_on_relay_by_index(self.relays[0])
+		#relay.turn_on_relay_by_index(self.relays[0])
+		print("Extending acctuator on relay", self.relays[0])
 		log('ControllerPi', None, 'controll', 'acctuator', 'Extending acctuator on relay', arg=self.relayIndex)
 		time.sleep(self.extension_time) # takes about 22 seconds to fully extend
 		self.state = 1 # show that it is extended
-		relay.turn_off_relay_by_index(self.relays[0])
+		#relay.turn_off_relay_by_index(self.relays[0])
+		print("Extended acctuator on relay", self.relays[0])
 		log('ControllerPi', True, 'controll', 'acctuator', 'Extended acctuator on relay', arg=self.relayIndex)
 
 
 	@fire_and_forget
 	def retract(self, asynchronous=True):
-		relay.turn_on_relay_by_index(self.relays[1])
+		#relay.turn_on_relay_by_index(self.relays[1])
+		print("Retracting acctuator on relay", self.relays[1])
 		time.sleep(self.extension_time) # it also takes 22 seconds to retract
 		self.state = 0
-		relay.turn_off_relay_by_index(self.relays[1])
+		print("Retracted acctuator on relay", self.relays[1])
+		#relay.turn_off_relay_by_index(self.relays[1])
 
 	def toggle(self, asynchronous=True):
 		if self.state == 1:
@@ -50,5 +54,5 @@ class Acctuator:
 
 	def stop(self):
 		""" turn off everything, this will stop and movment of the acctuator """
-		relay.turn_off_relay_by_index(self.relays[0])
-		relay.turn_off_relay_by_index(self.relays[1])
+		#relay.turn_off_relay_by_index(self.relays[0])
+		#relay.turn_off_relay_by_index(self.relays[1])
