@@ -29,5 +29,3 @@ class utils:
     
     def percentRange(range, float):
         return ((max(range) - min(range)) * float) + min(range)
-       
-       

@@ -37,6 +37,28 @@
             ],
             "sideWindows" : [
                 {
+                    "acctuatorRelayIndexExtend" : 9,
+                    "acctuatorRelayIndexRetract" : 10
+                },
+                {
+                    "acctuatorRelayIndexExtend" : 11,
+                    "acctuatorRelayIndexRetract" : 12
+                },
+                {
+                    "acctuatorRelayIndexExtend" : 13,
+                    "acctuatorRelayIndexRetract" : 14
+                },
+                {
+                    "acctuatorRelayIndexExtend" : 15,
+                    "acctuatorRelayIndexRetract" : 16
+                },
+                {
+                    "acctuatorRelayIndexExtend" : 25,
+                    "acctuatorRelayIndexRetract" : 26
+                }
+            ],
+            "topWindows" : [
+                {
                     "acctuatorRelayIndexExtend" : 1,
                     "acctuatorRelayIndexRetract" : 2
                 },
@@ -53,30 +75,8 @@
                     "acctuatorRelayIndexRetract" : 8
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 9,
-                    "acctuatorRelayIndexRetract" : 10
-                }
-            ],
-            "topWindows" : [
-                {
-                    "acctuatorRelayIndexExtend" : 11,
-                    "acctuatorRelayIndexRetract" : 12
-                },
-                {
-                    "acctuatorRelayIndexExtend" : 13,
-                    "acctuatorRelayIndexRetract" : 14
-                },
-                {
-                    "acctuatorRelayIndexExtend" : 15,
-                    "acctuatorRelayIndexRetract" : 16
-                },
-                {
                     "acctuatorRelayIndexExtend" : 17,
                     "acctuatorRelayIndexRetract" : 18
-                },
-                {
-                    "acctuatorRelayIndexExtend" : 19,
-                    "acctuatorRelayIndexRetract" : 20
                 }
             ],
 
@@ -110,20 +110,6 @@
             ],
             "sideWindows" : [
                 {
-                    "acctuatorRelayIndexExtend" : 21,
-                    "acctuatorRelayIndexRetract" : 22
-                },
-                {
-                    "acctuatorRelayIndexExtend" : 23,
-                    "acctuatorRelayIndexRetract" : 24
-                },
-                {
-                    "acctuatorRelayIndexExtend" : 25,
-                    "acctuatorRelayIndexRetract" : 26
-                }
-            ],
-            "topWindows" : [
-                {
                     "acctuatorRelayIndexExtend" : 27,
                     "acctuatorRelayIndexRetract" : 28
                 },
@@ -134,6 +120,20 @@
                 {
                     "acctuatorRelayIndexExtend" : 31,
                     "acctuatorRelayIndexRetract" : 32
+                }
+            ],
+            "topWindows" : [
+                {
+                    "acctuatorRelayIndexExtend" : 19,
+                    "acctuatorRelayIndexRetract" : 20
+                },
+                {
+                    "acctuatorRelayIndexExtend" : 21,
+                    "acctuatorRelayIndexRetract" : 22
+                },
+                {
+                    "acctuatorRelayIndexExtend" : 23,
+                    "acctuatorRelayIndexRetract" : 24
                 }
             ],
             "extremeTemperatureRange" : [10, 27],

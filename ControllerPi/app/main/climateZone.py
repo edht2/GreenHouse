@@ -12,8 +12,8 @@ class ClimateZone:
         # relay controlled
         self.twin:list = topWindows
         self.swin:list = sideWindows
-        self.heatingSolenoid = heatingSolenoid
-        self.mistingSolenoid = mistingSolenoid
+        self.hsol = heatingSolenoid
+        self.msol = mistingSolenoid
                 
         # data
         self.relativeHumidity:int = None
@@ -65,20 +65,22 @@ class ClimateZone:
             # temp managment
             if self.tempC < utils.mean(self.temperatureRange): # if it is colder than half way 
                 if self.temperatureRange[0] > self.tempC:
-                    # MAGOR PROBLEM TOO COLD
-                    # alert!!!
-                    pass
+                    print(f"CZ{self.no}: Very cold! Cannot sufficiently heat the greenhouse")
+                    # alert!!! The climate zone is too cold and is in a dire moment.
+                    # to heat it up, all windows are closed and a heating pipe is activeated
                 
                 elif utils.percentRange(self.temperatureRange, 0.05) >= self.tempC:
                     # if it is below / on 5% allowed temp this is cold we must heat it up!
-                    self.heating_solenoid.open() # We allow flow through the radiator
+                    """ self.heating_solenoid.open() """ # We allow flow through the radiator
                     # if this doesn't work there will be problems!!
+                    print(f"CZ{self.no}: Below 5% allowed temp -> Heating Solenoid is activating")
                 
                 elif utils.percentRange(self.temperatureRange, 0.2) >= self.tempC:
                     # if it is below 20% allowed temp starting to get cold
                     for window_acctuator in self.swin:
                         if window_acctuator.state == 1:
-                            window_acctuator.retract()
+                            #window_acctuator.retract()
+                            print
                             # close any open top_windows
                             
                 elif utils.percentRange(self.temperatureRange, 0.4) >= self.tempC:

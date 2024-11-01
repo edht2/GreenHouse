@@ -1,58 +1,65 @@
 from app.main.bed import Bed
 from app.main.climateZone import ClimateZone
+from app.main.greenhouse import GreenHouse
 from app.controll.solenoid import Solenoid
 from app.controll.acctuator import Acctuator
-from app.wateringMethods.soilmoisture import SM
+from app.bedModes.soilmoisture import SM
 from app.extensions.log import log
 from json import loads, dump
 
-setupJSONstring = open("app/state/state.json").read()
+setupJSON = open("app/state/state.json")
+setupJSONstring = setupJSON.read()
+setupJSON.close()
 setupDict = loads(setupJSONstring)
 
-GREENHOUSE = []
-# greenhouse[0].beds[0].wateringMethod.soilMoistureFloat = new data
+def getGreenhouseObject():
+    gh = []
+    
+    for cz in setupDict['climateZones']:
+        # for each climate zone
 
-for cz in setupDict['climateZones']:
-    # for each climate zone
+        beds = []
+        sideWindowAcctuators = []
+        topWindowAcctuators = []
 
-    beds = []
-    sideWindowAcctuators = []
-    topWindowAcctuators = []
-
-    for bed in cz['Beds']:
-        # for each bed
-        beds.append(Bed(
-            wateringMethod=SM(targetMoistureRange=bed['bedMoistureRange'],chirpSensorI2CAddress=bed["chirpSensorI2CAddress"], chirpSensorCalibration=bed["chirpSensorCalibration"]),
-            wateringSolenoid=Solenoid(bed['wateringSolenoidRelayIndex']),
+        for bed in cz['Beds']:
+            # for each bed
+            beds.append(Bed(
+                wateringMethod=SM(targetMoistureRange=bed['bedMoistureRange'],chirpSensorI2CAddress=bed["chirpSensorI2CAddress"], chirpSensorCalibration=bed["chirpSensorCalibration"]),
+                wateringSolenoid=Solenoid(bed['wateringSolenoidRelayIndex']),
+                climateZoneNumber=cz['climateZoneNumber'],
+                bedNumber=bed['bedNumber'],
+                MQTTtopic=bed['MQTTtopic'])
+                ) # make a bed object
+            
+        for swin in cz['sideWindows']:
+            # for every side window!
+            sideWindowAcctuators.append(Acctuator(
+                relayIndexes=[swin['acctuatorRelayIndexExtend'], swin['acctuatorRelayIndexRetract']],
+                extensionTime=60))
+            
+        for twin in cz['topWindows']:
+            # for every top window!
+            topWindowAcctuators.append(Acctuator(
+                relayIndexes=[twin['acctuatorRelayIndexExtend'], twin['acctuatorRelayIndexRetract']],
+                extensionTime=60))
+        
+        gh.append(ClimateZone(
+            beds=beds,
+            topWindows=topWindowAcctuators,
+            sideWindows=sideWindowAcctuators,
+            heatingSolenoid=cz['heatingSolenoidRelayIndex'],
+            mistingSolenoid=cz['mistingSolenoidRelayIndex'],
             climateZoneNumber=cz['climateZoneNumber'],
-            bedNumber=bed['bedNumber'],
-            MQTTtopic=bed['MQTTtopic'])
-            ) # make a bed object
+            extremeTemperatureRange=cz['extremeTemperatureRange'],
+            relativeHumidityRange=cz['targetHumidity%'],
+            minimumTargetCO2percent=cz['minimumTargetCO2%'],
+            SCD30sensorMqttTopic=cz['SCD30sensorMqttTopic']))
         
-    for swin in cz['sideWindows']:
-        # for every side window!
-        sideWindowAcctuators.append(Acctuator(
-            relayIndexes=[swin['acctuatorRelayIndexExtend'], swin['acctuatorRelayIndexRetract']],
-            extensionTime=60))
-        
-    for twin in cz['topWindows']:
-        # for every top window!
-        topWindowAcctuators.append(Acctuator(
-            relayIndexes=[twin['acctuatorRelayIndexExtend'], twin['acctuatorRelayIndexRetract']],
-            extensionTime=60))
-    
-    GREENHOUSE.append(ClimateZone(
-        beds=beds,
-        topWindows=topWindowAcctuators,
-        sideWindows=sideWindowAcctuators,
-        heatingSolenoid=cz['heatingSolenoidRelayIndex'],
-        mistingSolenoid=cz['mistingSolenoidRelayIndex'],
-        climateZoneNumber=cz['climateZoneNumber'],
-        extremeTemperatureRange=cz['extremeTemperatureRange'],
-        relativeHumidityRange=cz['targetHumidity%'],
-        minimumTargetCO2percent=cz['minimumTargetCO2%'],
-        SCD30sensorMqttTopic=cz['SCD30sensorMqttTopic']))
-    
+    return gh
+
+GREENHOUSE = getGreenhouseObject()
+      
 def onConfigRequest(data:str):
     # the request will look something like "climateZone : 1"
     try:

@@ -4,13 +4,12 @@ import asyncio
 import time
 
 class Acctuator:
-	def __init__(self, relayIndexes, extensionTime):
+	def __init__(self, relayIndexes, extensionTime, desc="Undefined"):
 		self.extension_time = extensionTime
 		self.relays = relayIndexes
 		# first relay in sequence is the dominant ( turn it on - the acctuator will extend )
 		self.state = 0
-		self.retract()
-		
+		self.description = desc
 	
     # I have a seperate fire and forget decorator for the relays allowing togglable asyncronousity
 	def fire_and_forget(f):
