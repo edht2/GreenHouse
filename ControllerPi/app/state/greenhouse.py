@@ -10,11 +10,9 @@ setupJSONstring = open("app/state/state.json").read()
 setupDict = loads(setupJSONstring)
 
 GREENHOUSE = []
-# greenhouse[0].beds[0].wateringMethod.soilMoistureFloat = new data
 
 for cz in setupDict['climateZones']:
     # for each climate zone
-
     beds = []
     sideWindowAcctuators = []
     topWindowAcctuators = []
@@ -22,11 +20,11 @@ for cz in setupDict['climateZones']:
     for bed in cz['Beds']:
         # for each bed
         beds.append(Bed(
-            wateringMethod=SM(targetMoistureRange=bed['bedMoistureRange'],chirpSensorI2CAddress=bed["chirpSensorI2CAddress"], chirpSensorCalibration=bed["chirpSensorCalibration"]),
             wateringSolenoid=Solenoid(bed['wateringSolenoidRelayIndex']),
             climateZoneNumber=cz['climateZoneNumber'],
             bedNumber=bed['bedNumber'],
-            MQTTtopic=bed['MQTTtopic'])
+            MQTTtopic=bed['MQTTtopic'],
+            soilMoisturePercentageRange=bed['bedMoistureRange'])
             ) # make a bed object
         
     for swin in cz['sideWindows']:
@@ -48,11 +46,13 @@ for cz in setupDict['climateZones']:
         heatingSolenoid=cz['heatingSolenoidRelayIndex'],
         mistingSolenoid=cz['mistingSolenoidRelayIndex'],
         climateZoneNumber=cz['climateZoneNumber'],
-        extremeTemperatureRange=cz['extremeTemperatureRange'],
+        targetTemperatureRange=cz['targetTemperatureRange'],
         relativeHumidityRange=cz['targetHumidity%'],
         minimumTargetCO2percent=cz['minimumTargetCO2%'],
         SCD30sensorMqttTopic=cz['SCD30sensorMqttTopic']))
-    
+
+
+
 def onConfigRequest(data:str):
     # the request will look something like "climateZone : 1"
     try:
@@ -72,8 +72,8 @@ def onConfigRequest(data:str):
         
         responceDict = dump({"beds" : bedList})
         # the dump function translates a python dictionary to a JSON string very cool!
-        return responceDict
+        return responceDict, climateZoneNumber
 
     except Exception as e:
         log('ControllerPi', False, 'configuration', 'mqtt', 'Incompatible format request message: ', arg=data, error=e)
-        return "Incompatible message"
+        raise ValueError("ERR ↑")
