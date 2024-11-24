@@ -51,8 +51,6 @@ for cz in setupDict['climateZones']:
         minimumTargetCO2percent=cz['minimumTargetCO2%'],
         SCD30sensorMqttTopic=cz['SCD30sensorMqttTopic']))
 
-
-
 def onConfigRequest(data:str):
     # the request will look something like "climateZone : 1"
     try:

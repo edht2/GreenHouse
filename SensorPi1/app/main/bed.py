@@ -22,7 +22,7 @@ class Bed:
         try:
             reading = self.chirpSensor.takeReading()
             self.soilMoistureReadings.append(reading[0])
-            self.temperatureReadings.appen(reading[1])
+            self.temperatureReadings.append(reading[1])
             # I add the read sensor values to a list to later be turned into mean average of the list.
             # I do this to reduce chance of a faulty reading messing everything up!
         except Exception as e:
