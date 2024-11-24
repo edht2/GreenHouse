@@ -5,14 +5,12 @@ from time import sleep
 
 class GreenHouse:
     def __init__(self, gh):
-        self.mqttBrokerAddr = cfg["mqttBrokerAddr"]
-        self.tickFrequency = cfg["tickFrequency"]
-        self.greenhouse = gh
+        self.greenHouseObjects = gh
         self.main()
+        # start the greenhouse loop!
 
-    # this works asyncronously to the rest of the programme
     def main(self):
         while True:
-            for climateZone in self.greenhouse:
+            for climateZone in self.greenHouseObjects:
                 climateZone.tick()
-            sleep(self.tickFrequency)
+            sleep(cfg["tickFrequency"])

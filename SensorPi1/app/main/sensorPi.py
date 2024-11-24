@@ -3,7 +3,7 @@ from app.extensions.log import log
 from time import sleep
 from app.extensions.mqtt import pub
 
-class climateZone:
+class SensorPi:
     def __init__(self, beds, scd30):
         self.climateZoneNumber = cfg["climateZone"]
         self.readFrequency  = cfg["readFrequency"]

@@ -11,10 +11,13 @@ class Bed:
         # this is more hardware side of things.
         self.ticksSinceLastWatering = 0
         self.wateringTicks = 0
+        
+        # sensor readings
         self.bedTemperature = None
         self.soilMoistureSensorPercent = None
         
-        # soilMoisturePercentageRange
+        # soil moisture percentage range this will be like 20% to 60% saturation
+        # really there probibally is no need for gardeners to ever have to 
         self.soilMoisturePercentageRange = soilMoisturePercentageRange
         
         # runtime variables!
@@ -24,15 +27,16 @@ class Bed:
                 
         sub.subscribe(self.MQTTtopic, self.onSensorUpdate)
         
-    def onSensorUpdate(self, data):
+    def onSensorUpdate(self, data): # When we recive a bed package, we need to update the values 
         data = loads(data)
+        # when the sensor pi sends a packet update the values accoringly
         self.soilMoistureSensorPercent = data["soilMoistureReading"]
         self.bedTemperature = data["temperatureReading"]
 
-    def shouldWater(self):
+    def shouldWater(self): # determite if we should water! 
         if self.soilMoistureSensorPercent < self.soilMoisturePercentageRange[0]:
-            # the bed is too dry, engage watering solenoid
-            print(f"Bed{self.no} is too dry, engaging watering solenoid")
+            # if the bed's soil-moisture saturation is below desired levels ↓
+            print(f"Bed{self.no} is too dry: opening watering solenoid")
             return True
         
         if self.wateringSolenoid.state == 1:
@@ -41,7 +45,7 @@ class Bed:
         
         if self.soilMoistureSensorPercent > self.soilMoisturePercentageRange[1]:
             # bed has been sufficiently watered: disable watering solenoid
-            print(f"Bed{self.no}: Bed has been sufficiently watered: disabling watering solenoid")
+            print(f"Bed{self.no}: Bed has been sufficiently watered: closing watering solenoid")
             return False
 
     def tick(self):
@@ -51,9 +55,11 @@ class Bed:
             self.wateringSolenoid.open(seconds=cfg['tickFrequency'])
             self.ticksSinceLastWatering = 0
             return log('ControllerPi', None, 'bed', 'wateringsolenoid', 'Opened the watering solenoids ', arg=f'climateZone:{self.czno}@bed{self.no}')
+        
         elif sw == None:
             self.wateringTicks += 1
             # this variable can be used by the timer when that is implemented
+            
         else:
             self.ticksSinceLastWatering += 1
             # again used by the timer
