@@ -7,11 +7,9 @@ from json import dump
 
 class Bed:
     def __init__(self, chirpSensorI2CAddress, chirpSensorCalibration, bedNumber):        
-        self.chirpSensorI2CAddress = chirpSensorI2CAddress
-        self.chirpSensorCalibration = chirpSensorCalibration
         self.bedNumber = bedNumber
         
-        self.chirpSensor = ChirpSensor(self.chirpSensorI2CAddress, self.bedNumber, self.chirpSensorCalibration[0], self.chirpSensorCalibration[1])
+        self.chirpSensor = ChirpSensor(chirpSensorI2CAddress, self.bedNumber, chirpSensorCalibration[0], chirpSensorCalibration[1])
         
         self.soilMoistureReadings = []
         self.temperatureReadings = []
@@ -26,10 +24,9 @@ class Bed:
             # I add the read sensor values to a list to later be turned into mean average of the list.
             # I do this to reduce chance of a faulty reading messing everything up!
         except Exception as e:
-            log(f"SensorPi{cfg["climateZone"]}", False, "bed", "chirpsensorreading",  "Error while trying to read sensor data, entering safe mode...", error=e)
+            log(f"SensorPi{cfg["climateZoneID"]}", False, "bed", "chirpsensorreading",  "Error while trying to read sensor data, entering safe mode...", error=e)
             self.status = "ER"
             # by setting the status to 'ER', the controller pi now knows to stop using this soil moisture sensor, and instead uses the clock.
-        
         
     def send(self, mqttTopic):
         message = dump({

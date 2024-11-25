@@ -5,15 +5,14 @@ from app.extensions.mqtt import pub
 
 class SensorPi:
     def __init__(self, beds, scd30):
-        self.climateZoneNumber = cfg["climateZone"]
-        self.readFrequency  = cfg["readFrequency"]
-        self.mqttTopic = f"SYS/climateZone{self.climateZoneNumber}"
+        self.climateZoneID = cfg["climateZoneID"]
+        self.mqttTopic = f"SYS/climateZone{self.climateZoneID}"
         
         self.beds = beds
         self.scd30 = scd30
         # this is a list of Bed objects and the SCD30 sensor object!
         
-        log(f'sensorPi{self.climateZoneNumber}', True, 'app', 'setup', 'Successfully created the SensorPi app!')
+        log(f'sensorPi{self.climateZoneID}', True, 'app', 'setup', 'Successfully created the SensorPi app!')
         self.main()
         # start the app loop
     
@@ -26,15 +25,14 @@ class SensorPi:
                 # for every bed
                 bed.tick()
                 # take a reading
-                if ticksSinceLastSend % 3:
+                if ticksSinceLastSend % 3 == 0:
                     bed.send(f"{self.mqttTopic}/bed{bed.bedNumber}")
+                    pub.publish(f"{self.mqttTopic}/SCD30", self.scd30.takeReading())
                     
                 else:
-                    ticksSinceLastSend += 1
-            
-            pub.publish(f"{self.mqttTopic}/SCD30", self.scd30.takeReading())
+                    ticksSinceLastSend += 1  
 
-            sleep(cfg["sendFrequency"])
-            # wait until the next send in required
+            sleep(cfg["tickFrequency"])
+            # wait until the next tick in required
             
     

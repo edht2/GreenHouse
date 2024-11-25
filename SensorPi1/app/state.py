@@ -8,4 +8,5 @@ def instantiateSensorPi(data):
         beds.append(Bed(chirpSensorI2CAddress=bed["chirpSensorI2CAddress"], chirpSensorCalibration=bed['chirpSensorCalibration'], bedNumber=bed['bedNumber']))
         
     SCD30 = SCD30sen()
+    # this is the RH%, CO², Temperature sensor!
     return beds, SCD30

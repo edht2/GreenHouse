@@ -15,6 +15,7 @@ class SCD30:
 			else:
 				time.sleep(0.2)
 				return self.takeReading()
+				# returns: RH%, Temp and CO² in that order!
 			
 	def stop(self):
 		self.scd30.stop_periodic_measurements()
