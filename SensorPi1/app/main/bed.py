@@ -24,7 +24,7 @@ class Bed:
             # I add the read sensor values to a list to later be turned into mean average of the list.
             # I do this to reduce chance of a faulty reading messing everything up!
         except Exception as e:
-            log(f"SensorPi{cfg["climateZoneID"]}", False, "bed", "chirpsensorreading",  "Error while trying to read sensor data, entering safe mode...", error=e)
+            log(f"SensorPi{cfg['climateZoneID']}", False, "bed", "chirpsensorreading",  "Error while trying to read sensor data, entering safe mode...", error=e)
             self.status = "ER"
             # by setting the status to 'ER', the controller pi now knows to stop using this soil moisture sensor, and instead uses the clock.
         
