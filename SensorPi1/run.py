@@ -1,17 +1,19 @@
-from colorama import Style, Fore, Back
-from app.main.configuration import cfg
-print(f"{Back.GREEN}{Fore.WHITE}Initiating SensorPi{cfg["climateZone"]}...{Style.RESET_ALL}")
+""" This creates a listener waiting for a config from the controller pi then sends another message requesting this config. """
 
-from SensorPi1.app.main.sensorPi import SensorPi
-from app.extensions.mqtt import sub, pub
-from app.state import instantiateSensorPi
-from app.main.configuration import cfg
+from colorama import Style, Fore, Back
+from app.config import climate_zone_number
+from app.main import sensorPi
+from app.mqtt.mqtt import sub, pub
+from app.tools.state import instantiate_sensorpi
 from json import loads
 
-def onConfigResponse(data:str):
+def on_config_response(data):
     # Awesome! We have our config now we can set up the SensorPi!
-    SensorPi(instantiateSensorPi(loads(data)))
-   
     
-sub.subscribe('SYS/setup', onConfigResponse)
-pub.publish('SYS/setupRequest', f"climateZone : {cfg["climateZone"]}")
+    print(f"{Back.GREEN}{Fore.WHITE}Initiating SensorPi{climate_zone_number}...{Style.RESET_ALL}")
+    # print a cool looking message confirming it is working
+    
+    sensorPi(instantiate_sensorpi(loads(data)))
+    
+sub.subscribe(f'setup_climate_zone_{climate_zone_number}', on_config_response)
+pub.publish(f'setup_request_climate_zone_{climate_zone_number}', f"climateZone : {climate_zone_number}")

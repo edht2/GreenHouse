@@ -1,0 +1,41 @@
+from app.config import read_frequency, mqtt_topic, climate_zone_name
+from app.tools.log import log
+from time import sleep
+from app.mqtt.mqtt import pub
+
+class sensorPi:
+    def __init__(self, beds, scd30):
+        self.beds = beds
+        self.scd30_sensor = scd30
+        # this is a list of Bed objects and the SCD30 sensor object!
+        
+        log(
+            device=climate_zone_name,
+            outcome=True,
+            subject='app',
+            topic='setup',
+            message='Successfully created the sensorPi app!'
+        )
+        # log the sensorpi is working
+        
+        self.main_loop()
+        # start the app loop
+    
+    def main_loop(self):
+        ticks_since_lasts_send = 0
+        running = True
+        
+        while running:
+            for bed in self.beds:
+                # for every bed
+                bed.sample_readings()
+                # take a reading
+                if ticks_since_lasts_send % 3 == 0:
+                    bed.send(f"{mqtt_topic}/bed{bed.bed_number}")
+                    pub.publish(f"{mqtt_topic}/SCD30", self.scd30.takeReading())
+                    
+                else:
+                    ticks_since_lasts_send += 1  
+
+            sleep(read_frequency)
+            # wait until the next tick in required

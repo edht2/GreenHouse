@@ -1,6 +1,0 @@
-{
-    "mqttBrokerAddr" : "mqtt.eclipseprojects.io",
-    "climateZoneID" : 1,
-    "readFrequency" : 10,
-    "sendFrequency" : 30 
-}
