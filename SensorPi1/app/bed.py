@@ -3,7 +3,7 @@ from app.mqtt.mqtt import pub
 from app.tools.utils import utils
 from app.tools.log import log
 from app.config import climate_zone_name
-from json import dump
+from json import dumps
 
 class Bed:
     def __init__(self, chirp_sensor_I2C_address, chirp_sensor_calibration, bed_number):        
@@ -47,7 +47,7 @@ class Bed:
             # by setting the status to 'ER', the controller pi now knows to stop using this soil moisture sensor, and instead uses the clock.
         
     def send(self, mqttTopic):
-        message = dump({
+        message = dumps({
             "soil_moisture_reading" : utils.mean(self.soil_moisture_readings),
             "temperature_reading" : utils.mean(self.temperature_readings),
             "status" : self.status

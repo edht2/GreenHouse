@@ -25,7 +25,7 @@ class log:
         if outcome == None: p1 = ''
         
         self.msg = f"@{device} {c}{p1}{p2}"
-        from app.extensions.mqtt import pub
+        from app.mqtt.mqtt import pub
         pub.publish(f'SYS/log', self.msg)
         # send the log to the sever
         

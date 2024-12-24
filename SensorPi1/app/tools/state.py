@@ -4,9 +4,9 @@ from app.bed import Bed
 def instantiate_sensorpi(data):
     beds = [
         Bed(
-            chirpSensorI2CAddress=bed["chirpSensorI2CAddress"],
-            chirpSensorCalibration=bed['chirpSensorCalibration'],
-            bedNumber=bed['bedNumber'])
+            chirp_sensor_I2C_address=bed["chirpSensorI2CAddress"],
+            chirp_sensor_calibration=bed['chirpSensorCalibration'],
+            bed_number=bed['bedNumber'])
         for bed in data['beds']]
     # populate beds with a list of 'Bed' objects    
         

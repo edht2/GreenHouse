@@ -9,4 +9,6 @@ class utils:
     
     def mean(lst):
         # returns the mean average of the inputted list
+        if not lst:
+            return 0
         return sum(lst) / len(lst)

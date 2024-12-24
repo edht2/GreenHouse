@@ -1,10 +1,10 @@
 """ This creates a listener waiting for a config from the controller pi then sends another message requesting this config. """
 
-""" from colorama import Style, Fore, Back
+from colorama import Style, Fore, Back
 from app.config import climate_zone_number, climate_zone_name
 from app.main import sensorPi
 from app.mqtt.mqtt import sub, pub
-from app.tools.state import instantiate_sensorpi """
+from app.tools.state import instantiate_sensorpi
 from json import loads, dumps
 
 """
@@ -52,6 +52,8 @@ bed_dict = {
 
 
 
-data = dumps(bed_dict)
-print(data)
-#sensorPi(instantiate_sensorpi(data))
+data = bed_dict
+
+a = instantiate_sensorpi(data)
+
+sensorPi(beds=a[0], scd30=a[1])

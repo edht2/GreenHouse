@@ -34,7 +34,7 @@ class sensorPi:
                 for bed in self.beds: bed.send(f"{mqtt_topic}/bed{bed.bed_number}")
                 # loop through every bed sending the collected data as you go
                 
-                self.scd30.send(f"{mqtt_topic}/SCD30")
+                self.scd30_sensor.send(f"{mqtt_topic}/SCD30")
                 # send the scd30 sensor data
                 
             else:
