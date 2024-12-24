@@ -1,19 +1,57 @@
 """ This creates a listener waiting for a config from the controller pi then sends another message requesting this config. """
 
-from colorama import Style, Fore, Back
-from app.config import climate_zone_number
+""" from colorama import Style, Fore, Back
+from app.config import climate_zone_number, climate_zone_name
 from app.main import sensorPi
 from app.mqtt.mqtt import sub, pub
-from app.tools.state import instantiate_sensorpi
-from json import loads
+from app.tools.state import instantiate_sensorpi """
+from json import loads, dumps
 
+"""
 def on_config_response(data):
     # Awesome! We have our config now we can set up the SensorPi!
     
-    print(f"{Back.GREEN}{Fore.WHITE}Initiating SensorPi{climate_zone_number}...{Style.RESET_ALL}")
+    print(f"{Back.GREEN}{Fore.WHITE}Initiating {climate_zone_name}...{Style.RESET_ALL}")
     # print a cool looking message confirming it is working
     
     sensorPi(instantiate_sensorpi(loads(data)))
     
 sub.subscribe(f'setup_climate_zone_{climate_zone_number}', on_config_response)
-pub.publish(f'setup_request_climate_zone_{climate_zone_number}', f"climateZone : {climate_zone_number}")
+pub.publish(f'setup_request_climate_zone_{climate_zone_number}', f"climate_zone : {climate_zone_number}")
+"""
+
+# ** test script remove in live env **
+bed_dict = {
+    "beds" : [
+        {
+            "chirpSensorI2CAddress" : "0x30",
+            "chirpSensorCalibration" : [257, 530],
+            "bedNumber" : 1,
+            "MQTTtopic" : "bed1"
+        },
+        {
+            "chirpSensorI2CAddress" : "0x31",
+            "chirpSensorCalibration" : [256, 519],
+            "bedNumber" : 2,
+            "MQTTtopic" : "bed2"
+        },
+        {
+            "chirpSensorI2CAddress" : "0x32",
+            "chirpSensorCalibration" : [254, 524],
+            "bedNumber" : 3,
+            "MQTTtopic" : "bed3"
+        },
+        {
+            "chirpSensorI2CAddress" : "0x33",
+            "chirpSensorCalibration" : [255, 529],
+            "bedNumber" : 4,
+            "MQTTtopic" : "bed4"
+        }
+    ]
+}
+
+
+
+data = dumps(bed_dict)
+print(data)
+#sensorPi(instantiate_sensorpi(data))

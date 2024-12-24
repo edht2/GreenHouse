@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from app.extensions.utils import utils
+from app.tools.utils import utils
 
 class Subscriber():
     def __init__(self, broker, port):

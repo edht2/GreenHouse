@@ -26,16 +26,19 @@ class sensorPi:
         running = True
         
         while running:
-            for bed in self.beds:
-                # for every bed
-                bed.sample_readings()
-                # take a reading
-                if ticks_since_lasts_send % 3 == 0:
-                    bed.send(f"{mqtt_topic}/bed{bed.bed_number}")
-                    pub.publish(f"{mqtt_topic}/SCD30", self.scd30.takeReading())
-                    
-                else:
-                    ticks_since_lasts_send += 1  
+            for bed in self.beds: bed.sample_readings()
+             # take a reading from every bed and save it
+
+            if ticks_since_lasts_send % 3 == 0:
+                
+                for bed in self.beds: bed.send(f"{mqtt_topic}/bed{bed.bed_number}")
+                # loop through every bed sending the collected data as you go
+                
+                self.scd30.send(f"{mqtt_topic}/SCD30")
+                # send the scd30 sensor data
+                
+            else:
+                ticks_since_lasts_send += 1  
 
             sleep(read_frequency)
             # wait until the next tick in required

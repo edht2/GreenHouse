@@ -13,5 +13,6 @@ send_frequency = 30
 mqtt_broker_address ="mqtt.eclipseprojects.io"
 # the mqtt broker address is a cruicial part of the system allowing the sensor pi
 # to communicate with the controller pi
+
 mqtt_topic = f"climate_zone_{climate_zone_number}"
 # where all of the data exported is directed through
