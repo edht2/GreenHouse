@@ -12,8 +12,4 @@ class ChirpSensor:
         self.chirp.trigger()
         # call the sensor to take a reading
         
-        round_to = 5
-        moisture_reading_rounded = round_to * round(self.chirp.moist_percent / round_to)
-        # round to the nearest x%
-        
-        return moisture_reading_rounded, self.chirp.temp
+        return round(self.chirp.moist_percent), round(self.chirp.temp)

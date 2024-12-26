@@ -8,7 +8,8 @@ class utils:
         return wrapped
     
     def mean(lst):
-        # returns the mean average of the inputted list
+        # returns the mean average of the inputed list
         if not lst:
             return 0
-        return sum(lst) / len(lst)
+        #return sum(lst) / len(lst)
+        return lst[0]

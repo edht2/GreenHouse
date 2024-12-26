@@ -15,13 +15,13 @@ class Bed:
             min_moist=chirp_sensor_calibration[0],
             max_moist=chirp_sensor_calibration[1]
         )
+
         # create the sensor object, used for sampling readings
         
         self.soil_moisture_readings = []
         self.temperature_readings = []
         self.status = "OK"
     
-    @utils.fire_and_forget
     def sample_readings(self):
         try:
             reading = self.chirp_sensor.read()
@@ -31,7 +31,6 @@ class Bed:
             self.temperature_readings.append(reading[1])
             # add the read sensor values to a list to later be turned into a mean average of the list
             # do this to flatten any volatility from the capactitive readings
-            
         except Exception as e:
             log(
                 device=climate_zone_name,
@@ -45,7 +44,8 @@ class Bed:
             
             self.status = "ER"
             # by setting the status to 'ER', the controller pi now knows to stop using this soil moisture sensor, and instead uses the clock.
-        
+            
+         
     def send(self, mqttTopic):
         message = dumps({
             "soil_moisture_reading" : utils.mean(self.soil_moisture_readings),
@@ -55,5 +55,6 @@ class Bed:
         self.soil_moisture_readings, self.temperature_readings = [], []
         # clear the reading lists
         
-        pub.publish(mqttTopic, message)
+        print(message)
+        #pub.publish(mqttTopic, message)
         # send the packet to the controller pi

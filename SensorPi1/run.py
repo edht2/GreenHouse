@@ -24,28 +24,16 @@ pub.publish(f'setup_request_climate_zone_{climate_zone_number}', f"climate_zone 
 bed_dict = {
     "beds" : [
         {
-            "chirpSensorI2CAddress" : "0x30",
-            "chirpSensorCalibration" : [257, 530],
+            "chirpSensorI2CAddress" : 0x10,
+            "chirpSensorCalibration" : [200, 530],
             "bedNumber" : 1,
             "MQTTtopic" : "bed1"
         },
         {
-            "chirpSensorI2CAddress" : "0x31",
-            "chirpSensorCalibration" : [256, 519],
+            "chirpSensorI2CAddress" : 0x11,
+            "chirpSensorCalibration" : [200, 530],
             "bedNumber" : 2,
             "MQTTtopic" : "bed2"
-        },
-        {
-            "chirpSensorI2CAddress" : "0x32",
-            "chirpSensorCalibration" : [254, 524],
-            "bedNumber" : 3,
-            "MQTTtopic" : "bed3"
-        },
-        {
-            "chirpSensorI2CAddress" : "0x33",
-            "chirpSensorCalibration" : [255, 529],
-            "bedNumber" : 4,
-            "MQTTtopic" : "bed4"
         }
     ]
 }
