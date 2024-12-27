@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 from paho.mqtt.properties import Properties
 from paho.mqtt.packettypes import PacketTypes
-from app.extensions.utils import utils
+from app.tools.utils import utils
 import time
 
 class Publisher:

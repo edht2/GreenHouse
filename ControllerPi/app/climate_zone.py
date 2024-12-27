@@ -1,56 +1,67 @@
-from app.extensions.mqtt import sub
-from app.extensions.utils import utils
-from app.extensions.log import log
+from app.mqtt.mqtt import sub
+from app.tools.utils import utils
+from app.tools.log import log
 from json import dump
 
 class ClimateZone:
-    def __init__(self, beds, topWindows, sideWindows, heatingSolenoid, mistingSolenoid, climateZoneNumber, targetTemperatureRange, relativeHumidityRange, minimumTargetCO2percent, SCD30sensorMqttTopic):
-        self.no:int = climateZoneNumber
-        self.mqttTopic:str = f"SYS/climateZone{climateZoneNumber}"
-        self.beds:list = beds
+    def __init__(self, beds, top_windows, side_windows, heating_solenoid, misting_solenoid, climate_zone_number, target_temperature_range, relative_humidity_range, minimum_target_CO2_percent, SCD30_sensor_mqtt_topic):
+        
+        if " ": # variable definitions
+            self.climate_zone_number = climate_zone_number
+            self.mqtt_topic:str = f"climate_zone_{climate_zone_number}"
+            self.beds = beds
 
-        # relay controlled
-        self.twin:list = topWindows
-        self.swin:list = sideWindows
-        self.heatingSolenoid = heatingSolenoid
-        self.mistingSolenoid = mistingSolenoid
-                
-        # sensor readings
-        self.relativeHumidity:int = None
-        self.CO2ppm:int = None
-        self.temperature:int = None # temp. in celceis
-                
-        self.SCD30sensorMqttTopic = SCD30sensorMqttTopic
-        # SCD30 mqtt topic, what did you think?
+            self.top_windows = top_windows
+            self.side_window = side_windows
+            # top and side windows (Acctuator class)
+            # so self.swin[0].extend() will extend an acctuator
+            
+            self.heating_solenoid = heating_solenoid
+            self.misting_solenoid = misting_solenoid
+            # the windows, both lists of Acctuator
+            
+            self.relative_humidity = None
+            self.CO2ppm = None
+            self.temperature = None # temp. in celceis
+            # sensor readings which will be updated
         
-        # targets
-        self.targetTemperatureRange = targetTemperatureRange
-        self.relativeHumidityRange = relativeHumidityRange
-        self.minimumTargetCO2percent = minimumTargetCO2percent
+            self.SCD30_sensor_mqtt_topic = SCD30_sensor_mqtt_topic
+            # SCD30 mqtt topic
+            
+            self.target_temperature_range = target_temperature_range
+            self.relative_humidity_range = relative_humidity_range
+            self.minimum_target_CO2_percent = minimum_target_CO2_percent
+            # the ideal ranges / minimums
         
-        sub.subscribe(self.SCD30sensorMqttTopic, self.onSCD30packetArival)
+        sub.subscribe(self.SCD30_sensor_mqtt_topic, self.on_SCD30_packet_arival)
         # this listener waits for the sensor pi to update information about the scd30 sensor
         
-    def onSCD30packetArival(self, data):
+        
+    def on_SCD30_packet_arival(self, data):
         data = dump(data)
         # make the string a python dictionary!
         
-        self.relativeHumidity = data["humidityReading"]
-        self.CO2ppm = data["CO2ppmReading"]
-        self.temperature = data["temperatureReading"]
+        self.relativeHumidity = data["RH%"]
+        self.CO2ppm = data["temperature"]
+        self.temperature = data["CO2ppm"]
+        # set the runtime variables to the new incoming data
+        
         
     def tick(self):
         for bed in self.beds:
             bed.tick()
-            
+        
+        
+        """ 
+        ##################################################################    
         if self.temperature != None:
             # this if is necessary for when the greenhouse starts.
             # This is because the greenhouse.temperature has a starting value of None type!
             
-            """ If the greenhouse goes out of the desired ranges it isn't really a problem. Sure it is best to have a perfectly regulated
+             If the greenhouse goes out of the desired ranges it isn't really a problem. Sure it is best to have a perfectly regulated
             temperature, however it is not always posible to heat the greenhouse to the needed temeratures. For example: it is -2°C out
             side despite all of the windows closed and the heating pipe on, it may be the greenhouse is ~5°C. And while not desired, this
-            is OK as any plant out side survives the -2°C. Again it is not ideal but sometimes the best you can do is all you will get. """
+            is OK as any plant out side survives the -2°C. Again it is not ideal but sometimes the best you can do is all you will get. 
             
             if self.temperature < utils.mean(self.targetTemperatureRange): # if it is colder than half way                
                 
@@ -106,4 +117,4 @@ class ClimateZone:
                     for window_acctuator in self.swin:
                         if window_acctuator.state == 0:
                             window_acctuator.extend()
-                            # close any open top_windows            
+                            # close any open top_windows     """        
