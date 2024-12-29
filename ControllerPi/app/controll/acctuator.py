@@ -1,5 +1,5 @@
 from app.controll.relay import relay
-from app.extensions.log import log
+from app.tools.log import log
 import asyncio
 import time
 
@@ -9,10 +9,8 @@ class Acctuator:
 		self.relays = relayIndexes
 		# first relay in sequence is the dominant ( turn it on - the acctuator will extend )
 		self.state = 0
-		self.retract()
-		
-	
-    # I have a seperate fire and forget decorator for the relays allowing togglable asyncronousity
+
+       # I have a seperate fire and forget decorator for the relays allowing togglable asyncronousity
 	def fire_and_forget(f):
 		""" Fire and forget is just asyncronously doing two things at the same time! 
 		eg. extend and acctuator AND not have to wait for it to fully extend"""

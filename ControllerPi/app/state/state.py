@@ -1,5 +1,5 @@
 from app.bed import Bed
-from ControllerPi.app.climate_zone import ClimateZone
+from app.climate_zone import ClimateZone
 from app.controll.solenoid import Solenoid
 from app.controll.acctuator import Acctuator
 from json import loads

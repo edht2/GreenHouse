@@ -30,13 +30,14 @@ class Bed:
         self.mqtt_topic = mqtt_topic
         # mqtt topic, all data from this bed has this parent directory
 
-        sub.subscribe(self.mqtt_topic, self.on_sensor_update)
+        sub.subscribe("gerbil", self.on_sensor_update)
         
     def on_sensor_update(self, data): # When we recive a bed package, we need to update the values
+        print("HELLO", data)
         # when the sensor pi sends an update on the sensor values ↓
         data = loads(data)
         # JSON → Python dict
-        
+
         self.soil_moisture_sensor_percent = data["soil_moisture_reading"]
         self.bed_temperature = data["temperature_reading"]
         # update the values
@@ -45,6 +46,9 @@ class Bed:
         # status is not used YET
 
     def should_water(self): # determite if we should water! 
+        if not self.soil_moisture_sensor_percent:
+            print("WARNING: No data for bed", self.bed_number)
+            return False
         if self.soil_moisture_sensor_percent < self.soil_moisture_percentage_range[0]:
             # if the bed's soil-moisture saturation is below desired levels ↓
             print(f"Bed{self.no} is too dry: opening watering solenoid")

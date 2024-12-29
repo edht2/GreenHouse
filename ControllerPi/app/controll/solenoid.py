@@ -1,5 +1,5 @@
 from app.controll.relay import relay
-from app.extensions.log import log
+from app.tools.log import log
 from time import sleep
 import asyncio
 
@@ -36,6 +36,7 @@ class Solenoid:
 
     @fire_and_forget
     def close(self, seconds=None, asynchronous=True):
-        relay.turn_off_relay_by_index(self.relayIndex)
+        #relay.turn_off_relay_by_index(self.relayIndex)
+        print(f"Closed solenoid on relay {self.relayIndex}")
         self.state = 0
         log('ControllerPi', True, 'controll', 'solenoid', 'Closed watering solenoid for {time} seconds on relay', arg=self.relayIndex)

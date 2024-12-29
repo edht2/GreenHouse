@@ -1,8 +1,8 @@
 from colorama import Style, Fore, Back
 print(f"{Back.GREEN}{Fore.WHITE}Initiating GreenHouse...{Style.RESET_ALL}")
 
-from ControllerPi.app.greenhouse import GreenHouse
-from ControllerPi.app.state.state import GREENHOUSE
+from app.greenhouse import GreenHouse
+from app.state.state import GREEN_HOUSE
 
-app = GreenHouse(GREENHOUSE)
+app = GreenHouse(GREEN_HOUSE)
 # create the GreenHouse object!!!
