@@ -13,9 +13,9 @@ class SCD30:
         self.scd30.start_periodic_measurement()
         # start taking readings
 
-        self.RH_readings = []
-        self.temperature_readings = []
         self.CO2_readings = []
+        self.temperature_readings = []
+        self.RH_readings = []
         # a list of readings
 
     def read(self):
@@ -28,13 +28,13 @@ class SCD30:
             if measurements is not None:
                 # if the sensor has acctually worked...  sometimes the sensor just returns 'None'
 
-                self.RH_readings.append(measurements[0])
+                self.CO2_readings.append(measurements[0])
                 self.temperature_readings.append(measurements[1])
-                self.CO2_readings.append(measurements[2])
+                self.RH_readings.append(measurements[2])
                 # add the new results to the lists of readings
 
                 return measurements
-                # returns: RH%, Temp and CO² in that order!
+                # returns: CO², Temp and RH% in that order!
             else:
                 time.sleep(0.2)
                 return self.read()
@@ -47,14 +47,14 @@ class SCD30:
         return self.read()
 
     def send(self, mqtt_topic):
-        mean_RH_reading = utils.mean(self.RH_readings)
-        mean_temperature_reading = utils.mean(self.temperature_readings)
         mean_CO2_reading = utils.mean(self.CO2_readings)
+        mean_temperature_reading = utils.mean(self.temperature_readings)
+        mean_RH_reading = utils.mean(self.RH_readings)
         # get a mean average to flatten a noisy data
 
-        self.RH_readings = []
-        self.temperature_readings = []
         self.CO2_readings = []
+        self.temperature_readings = []
+        self.RH_readings = []
         # reset the values
 
         message = dumps({

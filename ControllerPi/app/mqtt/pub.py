@@ -20,6 +20,3 @@ class Publisher:
         self.client.loop_start()    # start the loop
         time.sleep(5)               # wait
         self.client.loop_stop()     # stop the loop
-        
-    def __str__(self):
-        return f"Sent {self.payload} at {self.topic} to {self.broker_address}"

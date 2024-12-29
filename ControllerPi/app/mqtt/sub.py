@@ -1,5 +1,7 @@
 import paho.mqtt.client as mqtt
+# We're using paho mqtt driver
 from app.tools.utils import utils
+# utils is used for fire and forget
 
 class Subscriber():
     def __init__(self, broker, port):
@@ -17,9 +19,6 @@ class Subscriber():
         self.mqttc.connect(self.broker, self.port, self.keepalive)
         self.mqttc.subscribe(topics)
         self.mqttc.loop_forever()
-
-    def __str__(self):
-        return f"{self.topics}, {self.broker}, {self.port}"
 
     def on_message(self, mqttc, obj, msg):
         self.message_handler(msg.payload.decode("utf-8"))

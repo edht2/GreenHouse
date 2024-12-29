@@ -1,5 +1,5 @@
 from app.tools.log import log
-from app.mqtt.mqtt import pub, sub
+from app.mqtt.mqtt import sub
 from app.config import tick_frequency
 from time import sleep
 
@@ -8,10 +8,10 @@ class GreenHouse:
         self.green_house = gh
         # A list of every climate zone which contain everything else, from beds to solenoids
         
+        sub.subscribe("gerbil", self.sd)
+        
         self.main()
         # start the greenhouse loop!
-       
-        sub.subscribe("gerbil", self.sd)
 
     def sd(self, data):
         print(data)
