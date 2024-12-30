@@ -51,6 +51,7 @@ def create_app(config_class=Config):
         with app.app_context():
             lg = logging.getLogger('werkzeug')
             lg.setLevel(logging.ERROR)
+            # suppress the flask messages
             
             db.drop_all()
             # deletes the DB
@@ -68,7 +69,7 @@ def create_app(config_class=Config):
             db.session.commit()
             
             log(True, 'flaskapp', 'initialisation', f'Flask app build successfuly created')
-            log('Done', '', '', 'App is live at', arg=f'http://192.168.1.104:5000/', abort=False)
+            log('Done', '', '', 'App is live at', arg="http://127.0.0.1:5000", abort=False)
     except Exception as error:
         log(False, 'flaskapp', 'initialisation', f'Failed to built app object!', error=error, abort=True)
 
