@@ -8,13 +8,8 @@ class GreenHouse:
         self.green_house = gh
         # A list of every climate zone which contain everything else, from beds to solenoids
         
-        sub.subscribe("gerbil", self.sd)
-        
         self.main()
         # start the greenhouse loop!
-
-    def sd(self, data):
-        print(data)
 
     def main(self):
         while True:
