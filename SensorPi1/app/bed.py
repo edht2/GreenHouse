@@ -46,15 +46,16 @@ class Bed:
             # by setting the status to 'ER', the controller pi now knows to stop using this soil moisture sensor, and instead uses the clock.
             
          
-    def send(self, mqttTopic):
+    def compile_data(self):
         message = dumps({
-            "soil_moisture_reading" : utils.mean(self.soil_moisture_readings),
-            "temperature_reading" : utils.mean(self.temperature_readings),
-            "status" : self.status
-        })
+            f"bed{self.bed_number}" : {
+                "soil_moisture_reading" : utils.mean(self.soil_moisture_readings),
+                "temperature_reading" : utils.mean(self.temperature_readings),
+                "status" : self.status
+                }
+            }
+        )
         self.soil_moisture_readings, self.temperature_readings = [], []
         # clear the reading lists
         
-        print(message)
-        #pub.publish(mqttTopic, message)
-        # send the packet to the controller pi
+        return message

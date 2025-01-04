@@ -1,7 +1,6 @@
 from app.config import read_frequency
 from scd30_i2c import SCD30 as SCD30driver
 from app.tools.utils import utils
-from app.mqtt.mqtt import pub
 from json import dumps
 import time
 
@@ -46,7 +45,7 @@ class SCD30:
 
         return self.read()
 
-    def send(self, mqtt_topic):
+    def compile_data(self):
         mean_CO2_reading = utils.mean(self.CO2_readings)
         mean_temperature_reading = utils.mean(self.temperature_readings)
         mean_RH_reading = utils.mean(self.RH_readings)
@@ -58,15 +57,13 @@ class SCD30:
         # reset the values
 
         message = dumps({
-            "RH%" : mean_RH_reading,
+            "CO2ppm" : mean_CO2_reading,
             "temperature" : mean_temperature_reading,
-            "CO2ppm" : mean_CO2_reading
+            "RH%" : mean_RH_reading
         })
 
-        print(message)
-        #pub.publish(mqtt_topic, message)
-        # publish the data--dumps turns a python dictionary into a json string
+        return message
 
-        def stop(self):
-            self.scd30.stop_periodic_measurements()
-            # if we want to stop the sensor we can
+    def stop(self):
+        self.scd30.stop_periodic_measurements()
+        # if we want to stop the sensor we can

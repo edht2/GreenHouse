@@ -5,7 +5,7 @@ from app.mqtt.mqtt import sub
 
 def sd(msg):
     print("msg", msg)
-sub.subscribe("gerbil", sd)
+sub.subscribe("climate_zone_1", sd)
 
 from app.greenhouse import GreenHouse
 from app.state.state import GREEN_HOUSE
