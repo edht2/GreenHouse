@@ -39,7 +39,7 @@ function addEvent(id, strdate) {
     send_icon.className = 'input_icon';
     send_icon.id = 'send';
     send_icon.addEventListener('click', function(){
-        saveEvent(date, input)
+        saveEvent(date, input);
     });
 
     // cancel button
@@ -48,7 +48,7 @@ function addEvent(id, strdate) {
     cancel_icon.className = 'input_icon';
     cancel_icon.id = 'cancel';
     cancel_icon.addEventListener('click', function(e){
-        e.stopPropagation()
+        e.stopPropagation();
         cancelNewEvent(originaldate, date_obj, strdate)
     });
 
