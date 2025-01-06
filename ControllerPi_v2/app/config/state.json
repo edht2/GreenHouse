@@ -87,7 +87,8 @@
             "heatingSolenoidRelayIndex" : 37,
             "mistingSolenoidRelayIndex" : 38,
             "climateZoneNumber" : 1,
-            "SCD30sensorMqttTopic" : "SCD30"
+            "climateZoneMQTTtopic" : "climate_zone_1",
+            "SCD30sensorMQTTtopic" : "SCD30"
         },
         {
             "Beds" : [
@@ -143,7 +144,8 @@
             "heatingSolenoidRelayIndex" : 41,
             "mistingSolenoidRelayIndex" : 42,
             "climateZoneNumber" : 2,
-            "SCD30sensorMqttTopic" : "SCD30"
+            "climateZoneMQTTtopic" : "climate_zone_2",
+            "SCD30sensorMQTTtopic" : "SCD30"
         }
     ]
 }

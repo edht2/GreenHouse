@@ -2,10 +2,11 @@ import paho.mqtt.client as mqtt
 from paho.mqtt.properties import Properties
 from paho.mqtt.packettypes import PacketTypes
 from app.tools.fire_and_forget import fire_and_forget
+from app.config.config import mqtt_broker_address
 import time
 
 class Publisher:
-    def __init__(self, broker, port):
+    def __init__(self, broker=mqtt_broker_address, port=1883):
         self.broker_address = broker
         self.broker_port = port 
 

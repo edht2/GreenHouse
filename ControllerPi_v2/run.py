@@ -1,6 +1,6 @@
-from app.mqtt.mqtt import sub
+from colorama import Style, Fore, Back
+print(f"{Back.GREEN}{Fore.WHITE}Initiating GreenHouse...{Style.RESET_ALL}")
 
-def s(msg):
-    print(msg)
+from app.green_house import GreenHouse
 
-sub.subscribe("climate_zone_1/bed1", s)
+green_house = GreenHouse()
