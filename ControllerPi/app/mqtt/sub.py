@@ -1,12 +1,7 @@
 import paho.mqtt.client as mqtt
 # We're using paho mqtt driver
-import asyncio
-
-def fire_and_forget(f):
-    def wrapped(*args, **kwargs):
-        return asyncio.get_event_loop().run_in_executor(None, f, *args, *kwargs)
-        # runs the targeted function on a seperate thread
-    return wrapped
+from app.tools.utils import utils
+# utils is used for fire and forget
 
 class Subscriber():
     def __init__(self, broker, port):
@@ -14,7 +9,7 @@ class Subscriber():
         self.port = port
         self.keepalive = 60
         
-    @ fire_and_forget
+    @utils.fire_and_forget
     def subscribe(self, topic, message_handler, del_after_use=False):
         self.message_handler = message_handler
         self.del_after_use = del_after_use
