@@ -56,5 +56,5 @@ class Bed:
         # clear the reading lists
         
         print(message)
-        #pub.publish(mqttTopic, message)
+        pub.publish(mqttTopic, message)
         # send the packet to the controller pi
