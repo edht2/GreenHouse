@@ -3,14 +3,13 @@ from app.config.config import state, update_frequency, device_name
 from app.climate_zone import ClimateZone
 from app.tools.log import log
 from time import sleep
-from json import load
 
 class GreenHouse:
     def __init__(self):
         self.climate_zones = [ClimateZone(climate_zone["climateZoneNumber"]) for climate_zone in state]
         # create the climate zone object
         
-        log(device_name, True, "app_setup", "conformation", "App has been successfuly setup")
+        log(device_name, True, "greenhouse", "init", "App has been successfuly setup")
         
         self.start_app_loop()
         
@@ -20,8 +19,13 @@ class GreenHouse:
             # look at the sensor values, what is going on? fix it.
             
     def start_app_loop(self):
-        
         while True:
-            self.update()
-            # trigger an update
+            try:
+                log(device_name, None, "greenhouse", "app_loop", "Triggering new update")
+                self.update()
+                # trigger an update
+                log(device_name, True, "greenhouse", "app_loop", "Successfuly performed an update")
+            except Exception as e:
+                log(device_name, False, "greenhouse", "app_loop", "Failed to perform update", error=e)
+                
             sleep(update_frequency)

@@ -13,6 +13,5 @@ class ClimateZone:
             # do an update!!
         
         state = load(open("app/config/state.json"))["climateZones"]
-        print(f'min co2: {state[self.climate_zone_number-1]["minimumTargetCO2%"]}')
         
         """ Add climatezone temperature, humidity and co2 regulation here!! """

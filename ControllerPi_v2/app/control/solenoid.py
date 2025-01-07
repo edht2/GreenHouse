@@ -1,4 +1,4 @@
-from app.controll.relay import relay
+from app.control.relay import relay
 from app.tools.log import log
 from time import sleep
 import asyncio
