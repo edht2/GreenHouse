@@ -11,7 +11,7 @@ class Solenoid:
     # I have a seperate fire and forget decorator for the relays allowing togglable asyncronousity
     def fire_and_forget(f):
         """ Fire and forget is just asyncronously doing two things at the same time! 
-        eg. extend and acctuator AND not have to wait for it to fully extend """
+        eg. extend and actuator AND not have to wait for it to fully extend """
         def wrapped(*args, **kwargs):
             try:
                 if args[2]:

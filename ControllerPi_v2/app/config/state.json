@@ -29,30 +29,30 @@
             ],
             "sideWindows" : [
                 {
-                    "acctuatorRelayIndexExtend" : 1,
-                    "acctuatorRelayIndexRetract" : 2
+                    "actuatorRelayIndexExtend" : 1,
+                    "actuatorRelayIndexRetract" : 2
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 3,
-                    "acctuatorRelayIndexRetract" : 4
+                    "actuatorRelayIndexExtend" : 3,
+                    "actuatorRelayIndexRetract" : 4
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 5,
-                    "acctuatorRelayIndexRetract" : 6
+                    "actuatorRelayIndexExtend" : 5,
+                    "actuatorRelayIndexRetract" : 6
                 }
             ],
             "topWindows" : [
                 {
-                    "acctuatorRelayIndexExtend" : 11,
-                    "acctuatorRelayIndexRetract" : 12
+                    "actuatorRelayIndexExtend" : 11,
+                    "actuatorRelayIndexRetract" : 12
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 13,
-                    "acctuatorRelayIndexRetract" : 14
+                    "actuatorRelayIndexExtend" : 13,
+                    "actuatorRelayIndexRetract" : 14
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 15,
-                    "acctuatorRelayIndexRetract" : 16
+                    "actuatorRelayIndexExtend" : 15,
+                    "actuatorRelayIndexRetract" : 16
                 }
             ],
 
@@ -103,38 +103,38 @@
             ],
             "sideWindows" : [
                 {
-                    "acctuatorRelayIndexExtend" : 21,
-                    "acctuatorRelayIndexRetract" : 22
+                    "actuatorRelayIndexExtend" : 21,
+                    "actuatorRelayIndexRetract" : 22
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 23,
-                    "acctuatorRelayIndexRetract" : 24
+                    "actuatorRelayIndexExtend" : 23,
+                    "actuatorRelayIndexRetract" : 24
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 25,
-                    "acctuatorRelayIndexRetract" : 26
+                    "actuatorRelayIndexExtend" : 25,
+                    "actuatorRelayIndexRetract" : 26
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 25,
-                    "acctuatorRelayIndexRetract" : 26
+                    "actuatorRelayIndexExtend" : 25,
+                    "actuatorRelayIndexRetract" : 26
                 }
             ],
             "topWindows" : [
                 {
-                    "acctuatorRelayIndexExtend" : 19,
-                    "acctuatorRelayIndexRetract" : 20
+                    "actuatorRelayIndexExtend" : 19,
+                    "actuatorRelayIndexRetract" : 20
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 27,
-                    "acctuatorRelayIndexRetract" : 28
+                    "actuatorRelayIndexExtend" : 27,
+                    "actuatorRelayIndexRetract" : 28
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 29,
-                    "acctuatorRelayIndexRetract" : 30
+                    "actuatorRelayIndexExtend" : 29,
+                    "actuatorRelayIndexRetract" : 30
                 },
                 {
-                    "acctuatorRelayIndexExtend" : 31,
-                    "acctuatorRelayIndexRetract" : 32
+                    "actuatorRelayIndexExtend" : 31,
+                    "actuatorRelayIndexRetract" : 32
                 }
             ],
             "extremeTemperatureRange" : [10, 27],
