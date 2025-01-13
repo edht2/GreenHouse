@@ -1,4 +1,4 @@
-climate_zone_number = 1
+climate_zone_number = 2
 # the number assigned to the c.z.
 
 climate_zone_name = f"sensorPi {climate_zone_number}"
