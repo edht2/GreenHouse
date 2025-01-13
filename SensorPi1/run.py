@@ -48,13 +48,13 @@ elif climate_zone_number == 1:
     bed_dict = {
         "beds" : [
             {
-                "chirpSensorI2CAddress" : 0x30,
+                "chirpSensorI2CAddress" : 0x10,
                 "chirpSensorCalibration" : [200, 530],
                 "bedNumber" : 1,
                 "MQTTtopic" : "bed1"
             },
             {
-                "chirpSensorI2CAddress" : 0x34,
+                "chirpSensorI2CAddress" : 0x11,
                 "chirpSensorCalibration" : [200, 530],
                 "bedNumber" : 2,
                 "MQTTtopic" : "bed2"
