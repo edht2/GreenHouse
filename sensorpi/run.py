@@ -11,7 +11,7 @@ print(f"{Back.GREEN}{Fore.WHITE}Initiating {climate_zone_name}...{Style.RESET_AL
 """ create a dictionary for the climate zone which includes the bed id number, the i2c addresses for each of the 
     soil moisture sensors and the calibration data for them. """
 
-bed_dictionary = dict(beds = [])
+bed_dictionary = {"beds" : []}
 # create a dictionary with one item called beds which is an empty list
 
 for x in range(len(bed_num)): 
