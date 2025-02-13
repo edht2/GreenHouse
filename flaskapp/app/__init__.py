@@ -1,3 +1,4 @@
+from json import dumps
 from os import system
 from app.app_extensions.log import log
 system('clear')
@@ -7,10 +8,13 @@ from flask import Flask
 from app.extensions import db, fl
 from flask_login import current_user
 from datetime import date, timedelta
-from app.app_extensions.calendar import populate_calendar
+from var.test.calendar_populator import populate_calendar
+from var.test.user_populator import populate_users
+from var.test.env_limits_populator import populate_env_limits
+from app.mqtt import pub
 from colorama import Fore, Style
 from random import randint, choice
-from config import Config
+from config import Config, mqtt_topic
 from app.models import *
 from time import sleep
 import logging
@@ -59,15 +63,23 @@ def create_app(config_class=Config):
             # recreates the DB
             # I do this so the DB auto refreshed without me doing anything
             
-            # ***** Populate Calendar *****
+            # ***** Populate Calendar, User table, EnvLimits table *****
             populate_calendar()
-            # *****************************
-        
-            ed = User(full_name="Ed Haig-Thomas", email="ehaigthomas@gmail.com", password="gerbil", permissions=1)
-            ed.hash_password()
-            db.session.add(ed)
-            db.session.commit()
+            populate_users()
+            populate_env_limits()
+
+            # ***** Retrieve data from EnvLimits and publish to mqtt broker *******
+           
+            latest_env_limits_record = vars(EnvLimits.query.order_by(EnvLimits.date_time.desc()).first())  # dictionary of all records
+            #to json serialise it we need to turn two fields into strings...
+            latest_env_limits_record["date_time"] = str(latest_env_limits_record["date_time"])
+            latest_env_limits_record["_sa_instance_state"] = str(latest_env_limits_record["_sa_instance_state"])
+
+            json_string = dumps(latest_env_limits_record)
+            print(json_string)
+            pub.publish(mqtt_topic, json_string)
             
+
             log(True, 'flaskapp', 'initialisation', f'Flask app build successfuly created')
             log('Done', '', '', 'App is live at', arg="http://127.0.0.1:5000", abort=False)
     except Exception as error:

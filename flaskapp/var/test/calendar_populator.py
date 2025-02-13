@@ -6,7 +6,7 @@ from app.app_extensions.log import log
 
 def populate_calendar():
     """ I will populate the calendar to fill up a possible empty page
-        also it is a bit fun. Here's what in adding:
+        also it is a bit fun. Here's what I'm adding:
          · Holidays
          · Season stulsis
     """
@@ -23,6 +23,6 @@ def populate_calendar():
             for event in ths_year_events:
                 db.session.add(event)
         db.session.commit()
-        log(True, 'extensions', 'calendarpopulator', 'Calendar successfuly populated')
+        log(True, 'var', 'calendarpopulator', 'Calendar successfuly populated')
     except Exception as error:
-        log(False, 'extensions', 'calendarpopulator', 'Failed to populate the calendar!', error=error)
+        log(False, 'var', 'calendarpopulator', 'Failed to populate the calendar!', error=error)

@@ -1,0 +1,57 @@
+.field { margin: 50px; }
+.errors { padding: 5px 0px; }
+.error {
+    color: rgb(255, 0, 0);
+    font-size: 40px;
+}
+
+#content {
+    color: rgb(120, 120, 120);
+    font-size: 50px;
+    margin: 10px;
+
+
+input {
+    width: 80%;
+    padding: 1rem 10px;
+    font-size: 50px;
+    border-radius: 10px;
+    border: 0;
+    background-color: rgb(241, 241, 241);
+}
+input[type=submit] {
+
+    background-color: rgb(55, 55, 55);
+    color: rgb(255, 255, 255);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Collapse borders for a cleaner look */
+  }
+  
+  th, td {
+    border: 1px solid #ddd; /* Light gray borders */
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2; /* Light gray background for header cells */
+    font-weight: bold;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9; /* Very light gray for even rows */
+  }
+  
+  tr:hover {
+    background-color: #e0e0e0; /* Slightly darker gray on hover */
+  }
+  
+  /* Example of styling a container around the table (if needed) */
+  .table-container {
+    margin: 10px auto; /* Center the table */
+    width: 100%; /* Set a specific width */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Add a subtle shadow */
+  }

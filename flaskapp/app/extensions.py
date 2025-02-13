@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from app.app_extensions.log import log
+from datetime import datetime
 
 # ***** Create DB object *****
 try:

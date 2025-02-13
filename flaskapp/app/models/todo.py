@@ -13,7 +13,7 @@ class Todo(db.Model):
     is_completed    = db.Column(db.Boolean,     nullable    = False)
     completion_date = db.Column(db.DateTime,    nullable    = True )
     creation_date   = db.Column(db.DateTime,    default = dt.now() )
-    log(True, 'database', f'tbl_{__tablename__}', f"Table '{__tablename__}' succesfully created")
+    log(True, 'database', f'tbl_{__tablename__}', f"Table '{__tablename__}' successfully created")
     
     def completed(self):
         self.completion_date = dt.now()

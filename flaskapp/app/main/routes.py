@@ -1,3 +1,4 @@
+from json import dumps
 from flask import render_template, request, redirect, url_for
 from flask_login import login_user, login_required
 from datetime import date as dt_date
@@ -5,7 +6,7 @@ from datetime import timedelta, datetime
 from app.main import main
 from app.extensions import db
 from app.models import *
-from app.forms import *
+from app.forms import Login, Env_limits
 
 # ******************************************** Index *********************************************
 """ This is the index, when you first open the website and are signed in you will be directed 
@@ -31,14 +32,29 @@ def login():
     return render_template("login.html", form=form)
   
   
+
+
 # ****************************************** GreenHouse ******************************************
 """ This is the bulk of the app. A green house monitor and controller, this is my favorite 
-    page! :) """  
-@ main.route('/green-house')
+    page! :) """
+@main.route("/greenhouse", methods=["GET", "POST"])
 @ login_required
 def greenhouse():
-    return render_template("greenhouse.html")
+    latest_env_limits_record = vars(EnvLimits.query.order_by(EnvLimits.date_time.desc()).first())  # dictionary of all records
+    form = Env_limits(latest_env_limits_record, request.form)
+    env_limits = vars(EnvLimits.query.order_by(EnvLimits.date_time.desc()).first())  # dictionary of all records
+    return render_template("greenhouse.html", form=form)
 
+
+# ****************************************** GreenHouse/actual ***********************************
+
+@main.route("/greenhouse_ajax", methods=['GET'])
+@ login_required
+def greenhouse_actual():
+        
+    live_sensor_readings ={'cz1_temp': 15, 'cz1_rh': 45, 'cz1_rh': 75, 'cz1_bed1': 55, 'cz1_bed2': 56,'cz1_bed3': 55, 'cz2_temp': 17, 'cz2_rh': 45, 'cz2_rh': 75, 'cz2_bed4': 54, 'cz2_bed5': 56,'cz2_bed6': 55,'cz2_bed7': 55,'cz2_bed8': 55}
+    json_str = dumps(live_sensor_readings)
+    return str(json_str)
 
 # ******************************************* Calendar *******************************************
 """ The calendar page will show events that the gardeners should know about. Like a wedding. I

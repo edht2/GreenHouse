@@ -2,8 +2,8 @@ from colorama import Fore, Style
 
 class log:
     def __init__(self, outcome, subject:str, topic:str, message:str, arg:str='', error:object='', abort:bool=True):
-        """ I made this log object to create standard convension through the project
-            for error handleing and clarification"""
+        """ I made this log object to create standard convention through the project
+            for error handling and clarification."""
         # if outcome is true it worked, and false; didn't work
         if outcome == True:
             # if it went well:

@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     email       = db.Column(db.String(100), nullable    = False)
     password    = db.Column(db.String(500), nullable    = False)
     permissions = db.Column(db.Integer,     nullable    = False)
-    log(True, 'database', f'tbl_{__tablename__}', f"Table '{__tablename__}' succesfully created")
+    log(True, 'database', f'tbl_{__tablename__}', f"Table '{__tablename__}' successfully created")
     # permissions will show if the user is a gardener or admin
     
     def hash_password(self):

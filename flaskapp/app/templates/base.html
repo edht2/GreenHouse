@@ -24,7 +24,7 @@
                 <img class='icon' id='nav_todo' src={{url_for('static', filename='img/icon/todo.png')}} onclick='location.replace("/todo-list");'>
             </div>
             <div class='brdr'>
-                <img class='icon' id='nav_greenhouse' src={{url_for('static', filename='img/icon/greenhouse.png')}} onclick='location.replace("/green-house");'>
+                <img class='icon' id='nav_greenhouse' src={{url_for('static', filename='img/icon/greenhouse.png')}} onclick='location.replace("/greenhouse");'>
             </div>
             {% if current_user.is_authenticated %}
                 {% if current_user.permissions %}

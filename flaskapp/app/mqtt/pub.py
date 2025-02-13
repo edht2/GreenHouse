@@ -18,10 +18,7 @@ class Publisher:
     @utils.fire_and_forget
     def publish(self, topic, message):
         self.client.publish(topic=topic, payload=message, qos=1, properties=self.publish_properties)
-        log(True, 'mqtt', 'publishment', 'Published message:', message)
+        log(True, 'mqtt', 'publisher', 'sent', topic + ' to ' + self.broker_address)
         self.client.loop_start()    # start the loop
         time.sleep(5)               # wait
         self.client.loop_stop()     # stop the loop
-
-    def __str__(self):
-        return f"Sent {self.payload} at {self.topic} to {self.broker_address}"
