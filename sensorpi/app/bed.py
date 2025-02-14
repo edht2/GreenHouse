@@ -29,7 +29,8 @@ class Bed:
             
             self.soil_moisture_readings.append(reading[0])
             self.temperature_readings.append(reading[1])
-            # add the read sensor values to a list to later be turned into a mean average of the list
+        
+            # add the read sensor values to a list from which we can take the median
             # do this to flatten any volatility from the capactitive readings
         except Exception as e:
             log(
@@ -48,8 +49,8 @@ class Bed:
          
     def send(self, mqttTopic):
         message = dumps({
-            "soil_moisture_reading" : utils.mean(self.soil_moisture_readings),
-            "temperature_reading" : utils.mean(self.temperature_readings),
+            "median_soil_moist" : f"{utils.median_of_five(self.soil_moisture_readings):.1f}",
+            "median_temp" : f"{utils.median_of_five(self.temperature_readings):.1f}",
             "status" : self.status
         })
         self.soil_moisture_readings, self.temperature_readings = [], []
@@ -58,3 +59,7 @@ class Bed:
         print(message)
         pub.publish(mqttTopic, message)
         # send the packet to the controller pi
+
+
+    def identify(self):
+        return f"This is the bed to which I am linked {self.number}"

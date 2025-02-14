@@ -12,4 +12,4 @@ class ChirpSensor:
         self.chirp.trigger()
         # call the sensor to take a reading
         
-        return round(self.chirp.moist_percent), round(self.chirp.temp)
+        return self.chirp.moist_percent, self.chirp.temp

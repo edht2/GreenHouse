@@ -1,10 +1,10 @@
-climate_zone_number = 2
+climate_zone_number = 1
 # the number assigned to the c.z.
 
 climate_zone_name = f"sensorPi {climate_zone_number}"
 # the name of the climate zone
 
-read_frequency = 10
+read_frequency = 5
 # how often the sensors are triggered
 
 send_frequency = 30 

@@ -8,7 +8,6 @@ class sensorPi:
         self.beds = beds
         self.scd30_sensor = scd30
         # this is a list of Bed objects and the SCD30 sensor object!
-        
         log(
             device=climate_zone_name,
             outcome=True,
@@ -32,13 +31,15 @@ class sensorPi:
             self.scd30_sensor.read()
             # takes a reading from the SCD30 sensor
 
-            if ticks_since_lasts_send % 3 == 0:
+            if ticks_since_lasts_send % 5 == 0:
 
                 for bed in self.beds: bed.send(f"{mqtt_topic}/bed{bed.bed_number}")
+
                 # loop through every bed sending the collected data as you go
                 
                 self.scd30_sensor.send(f"{mqtt_topic}/SCD30")
                 # send the scd30 sensor data
+                
                 
             
             ticks_since_lasts_send += 1  

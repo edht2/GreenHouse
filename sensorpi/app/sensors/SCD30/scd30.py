@@ -6,7 +6,8 @@ from json import dumps
 import time
 
 class SCD30:
-    def __init__(self):
+    def __init__(self, climate_zone_id):
+        self.climate_zone_id = climate_zone_id
         self.scd30 = SCD30driver()
         self.scd30.set_measurement_interval(read_frequency)
         # start reading from the scd30 sensor at the rate defined in config ('read_frequency')
@@ -37,6 +38,7 @@ class SCD30:
                 # returns: CO², Temp and RH% in that order!
             else:
                 time.sleep(0.2)
+
                 return self.read()
 
         except:
@@ -47,10 +49,10 @@ class SCD30:
         return self.read()
 
     def send(self, mqtt_topic):
-        mean_CO2_reading = utils.mean(self.CO2_readings)
-        mean_temperature_reading = utils.mean(self.temperature_readings)
-        mean_RH_reading = utils.mean(self.RH_readings)
-        # get a mean average to flatten a noisy data
+        median_CO2_reading = utils.median_of_five(self.CO2_readings)
+        median_temperature_reading = utils.median_of_five(self.temperature_readings)
+        median_RH_reading = utils.median_of_five(self.RH_readings)
+        # get a median to reduce the effect of outlier data
 
         self.CO2_readings = []
         self.temperature_readings = []
@@ -58,15 +60,19 @@ class SCD30:
         # reset the values
 
         message = dumps({
-            "RH%" : mean_RH_reading,
-            "temperature" : mean_temperature_reading,
-            "CO2ppm" : mean_CO2_reading
+            "median_rh" : f"{median_RH_reading:.1f}",
+            "median_temp" : f"{median_temperature_reading:.1f}",
+            "median_co2_ppm" : f"{median_CO2_reading:.1f}"
         })
 
-        print(message)
-        #pub.publish(mqtt_topic, message)
+        print(mqtt_topic, message)
+        pub.publish(mqtt_topic, message)
+ 
         # publish the data--dumps turns a python dictionary into a json string
 
         def stop(self):
             self.scd30.stop_periodic_measurements()
             # if we want to stop the sensor we can
+
+    def identify(self):
+        return f"This is the climate_zone to which I am linked {self.climate_zone_id}"
