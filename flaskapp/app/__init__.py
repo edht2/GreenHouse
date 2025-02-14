@@ -1,3 +1,4 @@
+import numpy as np
 from json import dumps
 from os import system
 from app.app_extensions.log import log
@@ -79,6 +80,29 @@ def create_app(config_class=Config):
             print(json_string)
             pub.publish(mqtt_topic, json_string)
             
+            # ***** pull climate_zone data from mqtt broker and stick it into an array before calculating the median value of 5 iterations *******
+            bed4  = {"median_soil_moist": "20.0", "median_temp": "18.0", "status": "OK"}
+            bed5  = {"median_soil_moist": "21.0", "median_temp": "18.0", "status": "OK"}
+            bed6  = {"median_soil_moist": "22.0", "median_temp": "18.0", "status": "OK"}
+            bed7  = {"median_soil_moist": "23.0", "median_temp": "18.0", "status": "OK"}
+            bed8  = {"median_soil_moist": "24.0", "median_temp": "18.0", "status": "OK"}
+            cz = {"median_rh": "39.2", "median_temp": "18.8", "median_co2_ppm": "574.5"}
+
+
+            bed_4, bed_5, bed_6, bed_7, bed_8, rh, temp, co2 = [],[],[],[],[],[],[],[]
+
+
+            bed_4.append(bed4["median_soil_moist"])
+            bed_5.append(bed5["median_soil_moist"])
+            bed_6.append(bed6["median_soil_moist"])
+            bed_7.append(bed7["median_soil_moist"])
+            bed_8.append(bed8["median_soil_moist"])
+            rh.append(cz["median_rh"])
+            temp.append(cz["median_temp"])
+            co2.append(cz["median_co2_ppm"])
+
+            print(bed_4, bed_5, bed_6, bed_7, bed_8, rh, temp, co2)
+
 
             log(True, 'flaskapp', 'initialisation', f'Flask app build successfuly created')
             log('Done', '', '', 'App is live at', arg="http://127.0.0.1:5000", abort=False)
