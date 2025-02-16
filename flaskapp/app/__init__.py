@@ -80,28 +80,60 @@ def create_app(config_class=Config):
             print(json_string)
             pub.publish(mqtt_topic, json_string)
             
-            # ***** pull climate_zone data from mqtt broker and stick it into an array before calculating the median value of 5 iterations *******
-            bed4  = {"median_soil_moist": "20.0", "median_temp": "18.0", "status": "OK"}
-            bed5  = {"median_soil_moist": "21.0", "median_temp": "18.0", "status": "OK"}
-            bed6  = {"median_soil_moist": "22.0", "median_temp": "18.0", "status": "OK"}
-            bed7  = {"median_soil_moist": "23.0", "median_temp": "18.0", "status": "OK"}
-            bed8  = {"median_soil_moist": "24.0", "median_temp": "18.0", "status": "OK"}
-            cz = {"median_rh": "39.2", "median_temp": "18.8", "median_co2_ppm": "574.5"}
 
 
-            bed_4, bed_5, bed_6, bed_7, bed_8, rh, temp, co2 = [],[],[],[],[],[],[],[]
+            # ***** pull climate_zone data from mqtt broker. The following messages represent the formats we must adhere to*******
 
 
-            bed_4.append(bed4["median_soil_moist"])
-            bed_5.append(bed5["median_soil_moist"])
-            bed_6.append(bed6["median_soil_moist"])
-            bed_7.append(bed7["median_soil_moist"])
-            bed_8.append(bed8["median_soil_moist"])
-            rh.append(cz["median_rh"])
-            temp.append(cz["median_temp"])
-            co2.append(cz["median_co2_ppm"])
+            mqtt_message1 = {
+                "topic": "cz1", 
+                "payload": {
+                    "median_rh": "39.2", 
+                    "median_temp": "18.8", 
+                    "median_co2_ppm": "574.5"
+                    }
+                }
 
-            print(bed_4, bed_5, bed_6, bed_7, bed_8, rh, temp, co2)
+            mqtt_message2  = {
+                "topic": "cz2/bed4",
+                "payload": {
+                    "median_soil_moist": "24.0",
+                    "median_temp": "18.0", 
+                    "status": "OK"
+                    }
+                }
+            
+            mqtt_messages = [mqtt_message2, mqtt_message1]
+            # ******** 
+
+            def message_handler(mqtt_message):
+                topic = mqtt_message["topic"]
+                cz_name = mqtt_message["topic"][:3]
+                is_bed = topic.find("bed")
+
+                if is_bed != -1:
+                    bed_name = "bed" + topic[7]
+                    data = Bed(bed_name=bed_name, 
+                    sm_percent=mqtt_message["payload"]["median_soil_moist"], 
+                    cz_name=cz_name)
+
+                else:
+                    data = ClimateZone(climate_zone_name = cz_name, 
+                    rh=mqtt_message["payload"]["median_rh"], 
+                    temp=mqtt_message["payload"]["median_temp"], 
+                    co2_ppm=mqtt_message["payload"]["median_co2_ppm"])
+                
+                db.session.add(data)
+                db.session.commit()
+                print("sent to database")
+
+            # tests both types of mqtt incoming messages
+            for i in mqtt_messages:
+                message_handler(i)
+
+           
+
+
 
 
             log(True, 'flaskapp', 'initialisation', f'Flask app build successfuly created')
