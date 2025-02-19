@@ -18,6 +18,7 @@ from random import randint, choice
 from config import Config, mqtt_topic
 from app.models import *
 from time import sleep
+from app.mqtt import message_handler
 import logging
 
 def create_app(config_class=Config):
@@ -102,10 +103,11 @@ def create_app(config_class=Config):
                     "status": "OK"
                     }
                 }
-            
+    
             mqtt_messages = [mqtt_message2, mqtt_message1]
             # ******** 
 
+            """
             def message_handler(mqtt_message):
                 topic = mqtt_message["topic"]
                 cz_name = mqtt_message["topic"][:3]
@@ -126,6 +128,8 @@ def create_app(config_class=Config):
                 db.session.add(data)
                 db.session.commit()
                 print("sent to database")
+
+            """ 
 
             # tests both types of mqtt incoming messages
             for i in mqtt_messages:
