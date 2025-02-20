@@ -21,4 +21,4 @@ def message_handler(mqtt_message):
     
     db.session.add(data)
     db.session.commit()
-    print("sent to database")
+  

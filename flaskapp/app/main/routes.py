@@ -51,10 +51,73 @@ def greenhouse():
 @main.route("/greenhouse_ajax", methods=['GET'])
 @ login_required
 def greenhouse_actual():
+    czvars = "temp rh".split(" ")#["temp","rh"]
+    """   
+    live_sensor_readings ={
+                           'cz1_temp': 15, 
+                           'cz1_rh': 75, 
+
+                           'cz1_bed1': 55, 
+                           'cz1_bed2': 56,
+                           'cz1_bed3': 55, 
+
+                           'cz2_temp': 17, 
+                           'cz2_rh': 75, 
+
+                           'cz2_bed4': 54, 
+                           'cz2_bed5': 56,
+                           'cz2_bed6': 55,
+                           'cz2_bed7': 55,
+                           'cz2_bed8': 55
+                           }
+
+        live_sensor_readings = {}
+    for cz_no in [0,1]:
+        cz = ClimateZone.query.get(cz_no+1)
+        live_sensor_readings[f"cz{cz_no+1}_temp"] = cz.temp
+        live_sensor_readings[f"cz{cz_no+1}_rh"] = cz.rh
+
+        if cz_no == 0: beds = Bed.query.all()[5:]
+        else: beds = Bed.query.all()[:5]
         
-    live_sensor_readings ={'cz1_temp': 15, 'cz1_rh': 45, 'cz1_rh': 75, 'cz1_bed1': 55, 'cz1_bed2': 56,'cz1_bed3': 55, 'cz2_temp': 17, 'cz2_rh': 45, 'cz2_rh': 75, 'cz2_bed4': 54, 'cz2_bed5': 56,'cz2_bed6': 55,'cz2_bed7': 55,'cz2_bed8': 55}
-    json_str = dumps(live_sensor_readings)
-    return str(json_str)
+        clock = 0
+        if cz_no == 1:clock = 3
+        for bed in beds:
+            clock += 1
+            live_sensor_readings[f"cz{cz_no+1}_bed{clock}"] = bed.sm_percent
+
+    """
+    live_sensor_readings = {}# json starter
+    no_of_beds = 8# TODO add to a config oneday
+    beds_to_find = [i+1 for i in range(no_of_beds)]# makes a list starting at 1 not 0
+    beds = []
+    for bed in beds_to_find:
+
+        bed_latest_record = Bed.query.filter( # searches for the most reacent record for each bed
+                Bed.bed_name.like(
+                    f"%bed{bed}%"
+                )
+        ).order_by(
+            Bed.id.desc()
+        ).first()
+
+        if bed_latest_record: # adds ans to query
+            beds.append(bed_latest_record)
+        else: # if there is no result, say NoDat
+            beds.append("NoDat")
+
+    for cz_no in [0,1]: # runs all code for both czs
+        cz = ClimateZone.query.get(cz_no+1) # gets the current climate zone obj from db
+        live_sensor_readings[f"cz{cz_no+1}_temp"] = cz.temp # adds temp to json
+        live_sensor_readings[f"cz{cz_no+1}_rh"] = cz.rh # adds rh to json
+        counter = 0
+        if cz_no == 1:counter = 3 # TODO:add config, how many are in cz1
+        for bed in beds: 
+            counter += 1
+            live_sensor_readings[f"cz{cz_no+1}_bed{counter}"] = bed.sm_percent #adds to dict
+
+    json_str = dumps(live_sensor_readings)# jsonify the dict
+    return str(json_str) # send that shit, i mean poo
 
 # ******************************************* Calendar *******************************************
 """ The calendar page will show events that the gardeners should know about. Like a wedding. I
@@ -63,7 +126,7 @@ def greenhouse_actual():
 @ login_required
 def calendar(week):
     try:
-        DAYS = ("Mon Tue Wed Thu Fri Sat Sun").split()
+        DAYS = "Mon Tue Wed Thu Fri Sat Sun".split()
         upcoming_events = []
         pd = dt_date.today()
         pd += timedelta(days=7*int(week)-pd.weekday())

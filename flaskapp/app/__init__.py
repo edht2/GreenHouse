@@ -12,6 +12,7 @@ from datetime import date, timedelta
 from var.test.calendar_populator import populate_calendar
 from var.test.user_populator import populate_users
 from var.test.env_limits_populator import populate_env_limits
+from var.test.sensor_data import *
 from app.mqtt import pub
 from colorama import Fore, Style
 from random import randint, choice
@@ -65,15 +66,19 @@ def create_app(config_class=Config):
             # recreates the DB
             # I do this so the DB auto refreshed without me doing anything
             
-            # ***** Populate Calendar, User table, EnvLimits table *****
+            # ***** Populate Calendar, User table, EnvLimits table, Bed and ClimateZone*****
+            # ***** message_handler - pull climate_zone data from mqtt broker. 
+            # ***** Test messages in var/test are imported to populate the db sufficient for the greenhouse data page...*******
             populate_calendar()
             populate_users()
             populate_env_limits()
+            for i in mqtt_messages:
+                message_handler(i) # parses through mqtt messages and adds them to database tables
 
-            # ***** Retrieve data from EnvLimits and publish to mqtt broker *******
+            # ***** Retrieve data from EnvLimits table and publish to mqtt broker for the contoller pi*******
            
             latest_env_limits_record = vars(EnvLimits.query.order_by(EnvLimits.date_time.desc()).first())  # dictionary of all records
-            #to json serialise it we need to turn two fields into strings...
+            # to json serialise it we need to turn two fields into strings...
             latest_env_limits_record["date_time"] = str(latest_env_limits_record["date_time"])
             latest_env_limits_record["_sa_instance_state"] = str(latest_env_limits_record["_sa_instance_state"])
 
@@ -83,57 +88,8 @@ def create_app(config_class=Config):
             
 
 
-            # ***** pull climate_zone data from mqtt broker. The following messages represent the formats we must adhere to*******
+            
 
-
-            mqtt_message1 = {
-                "topic": "cz1", 
-                "payload": {
-                    "median_rh": "39.2", 
-                    "median_temp": "18.8", 
-                    "median_co2_ppm": "574.5"
-                    }
-                }
-
-            mqtt_message2  = {
-                "topic": "cz2/bed4",
-                "payload": {
-                    "median_soil_moist": "24.0",
-                    "median_temp": "18.0", 
-                    "status": "OK"
-                    }
-                }
-    
-            mqtt_messages = [mqtt_message2, mqtt_message1]
-            # ******** 
-
-            """
-            def message_handler(mqtt_message):
-                topic = mqtt_message["topic"]
-                cz_name = mqtt_message["topic"][:3]
-                is_bed = topic.find("bed")
-
-                if is_bed != -1:
-                    bed_name = "bed" + topic[7]
-                    data = Bed(bed_name=bed_name, 
-                    sm_percent=mqtt_message["payload"]["median_soil_moist"], 
-                    cz_name=cz_name)
-
-                else:
-                    data = ClimateZone(climate_zone_name = cz_name, 
-                    rh=mqtt_message["payload"]["median_rh"], 
-                    temp=mqtt_message["payload"]["median_temp"], 
-                    co2_ppm=mqtt_message["payload"]["median_co2_ppm"])
-                
-                db.session.add(data)
-                db.session.commit()
-                print("sent to database")
-
-            """ 
-
-            # tests both types of mqtt incoming messages
-            for i in mqtt_messages:
-                message_handler(i)
 
            
 
