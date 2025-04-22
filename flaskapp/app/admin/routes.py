@@ -1,5 +1,4 @@
 from flask import render_template, request
-from flask_login import login_required
 from app.extensions import db
 from app.models import Todo
 from app.admin import admin
@@ -21,7 +20,6 @@ def settings():
 
 # ***************************************** Ajax Request *****************************************
 @ admin.route('/todo-list/assignment/<id>/edited', methods=['GET', 'POST'])
-@ login_required
 def todo_edited(id):
     """ Used for editing a todo item, however this is accessable by super users! (hence it being
     under the 'admin' blueprint!!) """

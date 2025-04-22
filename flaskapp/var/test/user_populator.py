@@ -8,7 +8,7 @@ def populate_users():
     """
     
     try:
-        ed = User(full_name="Ed Haig-Thomas", email="ehaigthomas@gmail.com", password="gerbil", permissions=1)
+        ed = User(first_name="Ed", last_name="Haig-Thomas", email="ehaigthomas@gmail.com", password="gerbil", role="admin")
         ed.hash_password()
         db.session.add(ed)
         db.session.commit()

@@ -26,18 +26,10 @@
             <div class='brdr'>
                 <img class='icon' id='nav_greenhouse' src={{url_for('static', filename='img/icon/greenhouse.png')}} onclick='location.replace("/greenhouse");'>
             </div>
-            {% if current_user.is_authenticated %}
-                {% if current_user.permissions %}
-                    <div class='brdr'>
-                        <img class='icon' id='nav_test' src={{url_for('static', filename='img/icon/test.png')}} onclick='location.replace("/test")'>
-                    </div>
-                {% endif %}
-                {% if current_user.permissions %}
-                    <div class='brdr'>
-                        <img class='icon' id='nav_settings' src={{url_for('static', filename='img/icon/settings.png')}} onclick='location.replace("/settings")'>
-                    </div>
-                {% endif %}
-            {% endif %}
+            {#  Removed the conditional blocks that use current_user #}
+            {#  If you need to show these icons based on some other logic, #}
+            {#  you'll need to implement that logic in your Flask view and #}
+            {#  pass a variable to the template.  For now, I'm removing them. #}
         {% endblock %}
         
         </div>

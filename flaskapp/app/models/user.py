@@ -1,18 +1,20 @@
 from app.extensions import db
 from passlib.hash import sha256_crypt
-from flask_login import UserMixin
 from app.app_extensions.log import log
+from datetime import datetime
 
-class User(UserMixin, db.Model):
-    """ The 'User' table will be used for storing the users. (Big shocker :O)
-    These users would be like the Gardeners or Owner """
+class User(db.Model):
     __tablename__ = 'User'
     id          = db.Column(db.Integer,     primary_key = True )
-    full_name   = db.Column(db.String(100), nullable    = False)
-    email       = db.Column(db.String(100), nullable    = False)
-    password    = db.Column(db.String(500), nullable    = False)
-    permissions = db.Column(db.Integer,     nullable    = False)
+    first_name  = db.Column(db.String(100), nullable    = False)
+    last_name   = db.Column(db.String(100), nullable    = False)
+    email       = db.Column(db.String(100), nullable=False, unique=True)
+    password    = db.Column(db.String(500), nullable    = False) # Store hashed password
+    role        = db.Column(db.String(100), nullable    = False)
+    created_at  = db.Column(db.DateTime, default=datetime.utcnow)
+    
     log(True, 'database', f'tbl_{__tablename__}', f"Table '{__tablename__}' successfully created")
+
     # permissions will show if the user is a gardener or admin
     
     def hash_password(self):
@@ -23,6 +25,12 @@ class User(UserMixin, db.Model):
         return True if sha256_crypt.verify(attempt, self.password) else False
         # This validates the password attempt. I do this as it is imposible to decode a SHA256 hash
         
-    def get_id(self):
-        # this is required by flask_login
-        return self.id
+    
+    def verify_password(self, password):
+        """Verifies the provided password against the stored hash."""
+        return sha256_crypt.verify(password, self.password)
+    
+    
+    def __repr__(self):
+        return f'<User {self.email}>' #Added a repr method.
+
