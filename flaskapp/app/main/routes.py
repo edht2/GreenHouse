@@ -1,5 +1,5 @@
 from json import dumps
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from datetime import date as dt_date
 from datetime import timedelta, datetime
 from app.main import main
@@ -7,6 +7,7 @@ from app.extensions import db
 from app.models import *
 from app.forms import Login, Env_limits
 from app.auth import token_required #import from auth.py
+from flask import current_app
 
 # ******************************************** Index *********************************************
 """ This is the index, when you first open the website and are signed in you will be directed 
@@ -44,73 +45,42 @@ def greenhouse():
 
 @main.route("/greenhouse_ajax", methods=['GET'])
 def greenhouse_actual():
-    czvars = "temp rh".split(" ")#["temp","rh"]
-    """   
-    live_sensor_readings ={
-                           'cz1_temp': 15, 
-                           'cz1_rh': 75, 
-
-                           'cz1_bed1': 55, 
-                           'cz1_bed2': 56,
-                           'cz1_bed3': 55, 
-
-                           'cz2_temp': 17, 
-                           'cz2_rh': 75, 
-
-                           'cz2_bed4': 54, 
-                           'cz2_bed5': 56,
-                           'cz2_bed6': 55,
-                           'cz2_bed7': 55,
-                           'cz2_bed8': 55
-                           }
-
-        live_sensor_readings = {}
-    for cz_no in [0,1]:
-        cz = ClimateZone.query.get(cz_no+1)
-        live_sensor_readings[f"cz{cz_no+1}_temp"] = cz.temp
-        live_sensor_readings[f"cz{cz_no+1}_rh"] = cz.rh
-
-        if cz_no == 0: beds = Bed.query.all()[5:]
-        else: beds = Bed.query.all()[:5]
-        
-        clock = 0
-        if cz_no == 1:clock = 3
-        for bed in beds:
-            clock += 1
-            live_sensor_readings[f"cz{cz_no+1}_bed{clock}"] = bed.sm_percent
-
-    """
     live_sensor_readings = {} # json starter
-    no_of_beds = 8 # TODO add to a config oneday
+    no_of_beds = current_app.config.get('BED_NUM', 8) # go to config.py for hardcoded bed numbers.
+    cz1_bed_num = current_app.config.get('NO_OF_BEDS_IN_CZ1', 3)
     beds_to_find = [i+1 for i in range(no_of_beds)]# makes a list starting at 1 not 0
     beds = []
-    for bed in beds_to_find:
-
-        bed_latest_record = Bed.query.filter( # searches for the most reacent record for each bed
+    for bed_index in beds_to_find:
+        bed_latest_record = Bed.query.filter( # searches for the most recent record for each bed
                 Bed.bed_name.like(
-                    f"%bed{bed}%"
+                    f"%bed{bed_index}%"
                 )
         ).order_by(
             Bed.id.desc()
         ).first()
 
-        if bed_latest_record: # adds ans to query
-            beds.append(bed_latest_record)
-        else: # if there is no result, say NoDat
-            beds.append("NoDat")
+        beds.append(bed_latest_record) # Append the Bed object (or None if not found)
 
     for cz_no in [0,1]: # runs all code for both czs
         cz = ClimateZone.query.get(cz_no+1) # gets the current climate zone obj from db
-        live_sensor_readings[f"cz{cz_no+1}_temp"] = cz.temp # adds temp to json
-        live_sensor_readings[f"cz{cz_no+1}_rh"] = cz.rh # adds rh to json
-        counter = 0
-        if cz_no == 1:counter = 3 # TODO:add config, how many are in cz1
-        for bed in beds: 
-            counter += 1
-            live_sensor_readings[f"cz{cz_no+1}_bed{counter}"] = bed.sm_percent #adds to dict
+        if cz:
+            live_sensor_readings[f"cz{cz_no+1}_temp"] = cz.temp # adds temp to json
+            live_sensor_readings[f"cz{cz_no+1}_rh"] = cz.rh # adds rh to json
+            live_sensor_readings[f"cz{cz_no+1}_VPD"] = cz.VPD # adds rh to json
+            counter = 0
+            start_bed = 1 if cz_no == 0 else cz1_bed_num
+            
+            for i in range(cz1_bed_num if cz_no == 0 else (no_of_beds - cz1_bed_num)):
+                bed = beds[start_bed + i -1] # Adjust index to match beds list
+                live_sensor_readings[f"cz{cz_no+1}_bed{start_bed + i}"] = bed.sm_percent if isinstance(bed, Bed) else None
+        else:
+            live_sensor_readings[f"cz{cz_no+1}_temp"] = None
+            live_sensor_readings[f"cz{cz_no+1}_rh"] = None
+            live_sensor_readings[f"cz{cz_no+1}_VPD"] = None
+            for i in range(no_of_beds):
+                live_sensor_readings[f"cz{cz_no+1}_bed{i+1}"] = None
 
-    json_str = dumps(live_sensor_readings)# jsonify the dict
-    return str(json_str) # send that shit, i mean poo
+    return jsonify(live_sensor_readings)
 
 # ******************************************* Calendar *******************************************
 """ The calendar page will show events that the gardeners should know about. Like a wedding. I

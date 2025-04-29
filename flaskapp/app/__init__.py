@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, render_template, request, jsonify, make_response, current_app
 from app.extensions import db
 from app.main import main
 from app.admin import admin
@@ -8,15 +8,21 @@ from var.test.calendar_populator import populate_calendar
 from var.test.user_populator import populate_users
 from var.test.env_limits_populator import populate_env_limits
 from var.test.sensor_data import *
-from app.mqtt import pub
+from app.mqtt import pub, sub
 from app.mqtt import message_handler
 from app.models import User, EnvLimits
 from config import Config
 import jwt
 from flask_cors import CORS
-from app.auth import token_required, create_jwt # Import from auth.py
+from app.auth import token_required # Import from auth.py
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity, get_jwt, JWTManager, create_access_token, set_access_cookies, unset_jwt_cookies # Import JWTManager and functions
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError # Import exceptions from jwt
+from json import dumps
+import logging
+import threading
+
+
+
 
 def create_app(config_class=Config):
     """This is the Flask App Factory. Handles app creation and configuration."""
@@ -28,7 +34,8 @@ def create_app(config_class=Config):
     configure_jwt(app)  # Configure JWT AFTER blueprints
     create_database(app)
     populate_database(app)
-    configure_mqtt(app)
+    configure_mqtt_pub(app)
+    configure_mqtt_sub(app)
     return app
 
 def configure_extensions(app):
@@ -101,10 +108,8 @@ def configure_jwt(app):
     @app.route('/verify-token', methods=['POST'])
     def verify_token():
         try:
-            print('we are trying to verify.....................')
             verify_jwt_in_request()
             current_user_id = get_jwt_identity()
-            print("current user is....", current_user_id)
             current_user = User.query.get(current_user_id)
             if current_user:
                 return jsonify({
@@ -143,10 +148,12 @@ def populate_database(app):
             message_handler(i)
         logging.info("Database populated with initial data")
 
-def configure_mqtt(app):
-    """Configures MQTT publishing."""
+def configure_mqtt_pub(app):
+    """Configures MQTT publishing. This publishes the env limits in the database to be shared with the controller pi"""
     with app.app_context():
         try:
+            mqtt_topic = current_app.config.get('MQTT_LIMIT_TOPIC')
+            print('mqtt_topic: ', mqtt_topic)
             latest_env_limits_record = vars(
                 EnvLimits.query.order_by(EnvLimits.date_time.desc()).first())
             latest_env_limits_record["date_time"] = str(latest_env_limits_record["date_time"])
@@ -156,9 +163,29 @@ def configure_mqtt(app):
             json_string = dumps(latest_env_limits_record)
             print(json_string)
             pub.publish(mqtt_topic, json_string)
+            print("we are publishing our env limits")
             logging.info("MQTT publishing configured")
         except Exception as e:
             logging.error(f"Error publishing to MQTT: {e}")
+
+def configure_mqtt_sub(app):
+    with app.app_context():
+        try:
+            mqtt_broker = current_app.config.get('MQTT_BROKER_ADDRESS')
+            mqtt_port = current_app.config.get('MQTT_PORT')
+            mqtt_topic = current_app.config.get('MQTT_SENSOR_TOPIC')
+            if not mqtt_broker or not mqtt_port or not mqtt_topic:
+                logging.error("MQTT broker address, port, or topic not configured.")
+                return
+
+            subscribe_instance = sub.Subscribe(mqtt_broker, mqtt_port, mqtt_topic, message_handler)
+            thread = threading.Thread(target=subscribe_instance.run, daemon=True)
+            thread.start()
+            print(f"Subscribed to {mqtt_topic} in a separate thread.")
+
+        except Exception as e:
+            logging.error(f"Error configuring MQTT subscription: {e}")
+
 
 if __name__ == "__main__":
     app = create_app()
