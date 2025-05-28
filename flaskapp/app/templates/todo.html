@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}ToDo{% endblock %}
+{% block header %}ToDo{% endblock %}
+{% block content %}
+    <!-- Body stuff goes here! -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/todo.css') }}">
+
+    {% for task in tasks %}
+        <div class='todo_item_container'>
+            <div class='todo_item' id='todo_item_{{ task.id }}' onclick='window.location.href = "/todo-list/assignment/{{ task.id }}";'>
+                {{ task.title }}
+            </div>
+            <div class='break'></div>
+        </div>
+    {% endfor %}
+
+    {% if (tasks_len < 1) %}
+        <center><div class='note'>All the tasks have been completed :)</div></center>
+    {% endif%}
+
+{% endblock %}
+

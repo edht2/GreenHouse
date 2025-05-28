@@ -1,0 +1,43 @@
+.todo_item_container {
+    margin: 50px;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+.todo_item {
+    background-color: rgb(226, 226, 226);
+    padding: 5px;
+    border-radius: 10px;
+}
+.break {
+    height: 1px;
+    width: 100%;
+    background-color: rgb(55, 55, 55);
+    margin-top: 25px;
+}
+#buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+input[type=button] {
+    background-color: rgb(55, 55, 55);
+    color: rgb(255, 255, 255);
+    width: 47%;
+    padding: 3rem 10px;
+    font-size: 50px;
+    border-radius: 10px;
+    border: 0;
+}
+#top_pannel_edit {
+    background-color: rgb(245, 245, 237);
+    padding: 10px;
+    font-size: 150px;
+    width: 100%;
+    height: 15%;
+}
+#paragraph_edit {
+    font-size: 50px;
+    padding: 10px;
+    width: 95%;
+    height: 95%;
+}

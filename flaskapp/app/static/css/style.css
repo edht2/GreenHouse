@@ -1,0 +1,72 @@
+@font-face{
+    font-family: Helvetica;
+    src: url('../font/Helvetica-Bold-Font.otf');
+    font-weight: bold;
+}
+* {   
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(255, 255, 255);
+    color: rgb(55, 55, 55);
+    align-items: center;
+    font-weight: bold;
+    font-family: Helvetica;
+}
+.paragraph {
+    font-size: 50px;
+}
+.note {
+    font-size: 50px;
+    color: rgb(168, 168, 168);
+}
+#content {
+    color: rgb(120, 120, 120);
+    font-size: 75px;
+    margin: 10px;
+}
+.nav {
+    height: 100px;
+    width: 25%;
+    background-color: rgb(55, 55, 55);;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+    font-size: 50px;
+}
+#top_pannel {
+    background-color: rgb(245, 245, 237);
+    padding: 10px;
+    font-size: 150px;
+    width: 125%;
+    height: 15%;
+}
+#spc {
+    height: 220px;
+}
+#footer {
+    background-color: rgb(245, 245, 237);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: fixed;
+}
+.brdr {
+    background-color: rgb(245, 245, 237);
+}
+.icon {
+    background-color: rgb(245, 245, 237);
+    width: 125px;
+    height: 125px;
+    margin: 10px;
+}
+.brk {
+    width: 100%;
+    background-color: transparent;
+    margin: 5px;
+}

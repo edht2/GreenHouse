@@ -1,0 +1,53 @@
+#calendar {
+    margin: 50px;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+.date {
+    border-radius: 10px;
+    background-color: rgb(226, 226, 226);
+    width: 100%;
+    padding: 10px;
+}
+.event {
+    border-radius: 10px;
+    background-color: rgb(197, 197, 197);
+    width: 97%;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.break {
+    height: 1px;
+    width: 100%;
+    background-color: rgb(55, 55, 55);
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.input_icon {
+    position: absolute; 
+    border: none; 
+    background-color: transparent;
+    height: 1em;
+    width: 1em;
+    top: 0;
+    padding-top: 5px;
+}
+#input_wrapper {
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    width: 99%;
+}
+#input_wrapper input { 
+    padding-right: 10px;
+} 
+#input_wrapper #send { 
+    right: 15px; 
+}
+#input_wrapper #cancel { 
+    right: 1.5em;
+}
+input {
+    border: 0;
+    font-size: 75px;
+}

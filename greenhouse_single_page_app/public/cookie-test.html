@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Cookie Test</title>
+    </head>
+    <body>
+        <h1>Cookie Test</h1>
+        <div id="cookieValue"></div>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+        <script>
+            const cookieValue = Cookies.get('test_cookie');
+            document.getElementById('cookieValue').textContent = 'Cookie Value: ' + cookieValue;
+            console.log('Cookie Value:', cookieValue);
+        </script>
+    </body>
+    </html>

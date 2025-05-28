@@ -1,0 +1,151 @@
+{
+    "climateZones" : [
+        {
+            "Beds" : [
+                {
+                    "chirpSensorI2CAddress" : "0x10",
+                    "chirpSensorCalibration" : [200, 500],
+                    "wateringSolenoidRelayIndex" : 33,
+                    "bedMoistureRange" : [20, 40],
+                    "bedNumber" : 1,
+                    "MQTTtopic" : "bed1"
+                },
+                {
+                    "chirpSensorI2CAddress" : "0x11",
+                    "chirpSensorCalibration" : [200, 500],
+                    "wateringSolenoidRelayIndex" : 34,
+                    "bedMoistureRange" : [20, 40],
+                    "bedNumber" : 2,
+                    "MQTTtopic" : "bed2"
+                },
+                {
+                    "chirpSensorI2CAddress" : "0x12",
+                    "chirpSensorCalibration" : [200, 500],
+                    "wateringSolenoidRelayIndex" : 35,
+                    "bedMoistureRange" : [20, 40],
+                    "bedNumber" : 3,
+                    "MQTTtopic" : "bed3"
+                }
+            ],
+            "sideWindows" : [
+                {
+                    "actuatorRelayIndexExtend" : 1,
+                    "actuatorRelayIndexRetract" : 2
+                },
+                {
+                    "actuatorRelayIndexExtend" : 3,
+                    "actuatorRelayIndexRetract" : 4
+                },
+                {
+                    "actuatorRelayIndexExtend" : 5,
+                    "actuatorRelayIndexRetract" : 6
+                }
+            ],
+            "topWindows" : [
+                {
+                    "actuatorRelayIndexExtend" : 11,
+                    "actuatorRelayIndexRetract" : 12
+                },
+                {
+                    "actuatorRelayIndexExtend" : 13,
+                    "actuatorRelayIndexRetract" : 14
+                },
+                {
+                    "actuatorRelayIndexExtend" : 15,
+                    "actuatorRelayIndexRetract" : 16
+                }
+            ],
+
+            "extremeTemperatureRange" : [10, 27],
+            "targetTemperatureRange" : [18, 21],
+            "targetHumidity%" : [60, 70],
+            "minimumTargetCO2%" : 0.01,
+            "heatingSolenoidRelayIndex" : 37,
+            "mistingSolenoidRelayIndex" : 38,
+            "climateZoneNumber" : 1,
+            "climateZoneMQTTtopic" : "climate_zone_1",
+            "SCD30sensorMQTTtopic" : "SCD30"
+        },
+        {
+            "Beds" : [
+                {
+                    "chirpSensorI2CAddress" : "0x30",
+                    "chirpSensorCalibration" : [200, 500],
+                    "wateringSolenoidRelayIndex" : 36,
+                    "bedMoistureRange" : [20, 40],
+                    "bedNumber" : 1,
+                    "MQTTtopic" : "bed1"
+                },
+                {
+                    "chirpSensorI2CAddress" : "0x31",
+                    "chirpSensorCalibration" : [200, 500],
+                    "wateringSolenoidRelayIndex" : 37,
+                    "bedMoistureRange" : [20, 40],
+                    "bedNumber" : 2,
+                    "MQTTtopic" : "bed2"
+                },
+                {
+                    "chirpSensorI2CAddress" : "0x32",
+                    "chirpSensorCalibration" : [200, 500],
+                    "wateringSolenoidRelayIndex" : 38,
+                    "bedMoistureRange" : [20, 40],
+                    "bedNumber" : 3,
+                    "MQTTtopic" : "bed3"
+                },
+                {
+                    "chirpSensorI2CAddress" : "0x33",
+                    "chirpSensorCalibration" : [200, 500],
+                    "wateringSolenoidRelayIndex" : 39,
+                    "bedMoistureRange" : [20, 40],
+                    "bedNumber" : 4,
+                    "MQTTtopic" : "bed4"
+                }
+            ],
+            "sideWindows" : [
+                {
+                    "actuatorRelayIndexExtend" : 21,
+                    "actuatorRelayIndexRetract" : 22
+                },
+                {
+                    "actuatorRelayIndexExtend" : 23,
+                    "actuatorRelayIndexRetract" : 24
+                },
+                {
+                    "actuatorRelayIndexExtend" : 25,
+                    "actuatorRelayIndexRetract" : 26
+                },
+                {
+                    "actuatorRelayIndexExtend" : 25,
+                    "actuatorRelayIndexRetract" : 26
+                }
+            ],
+            "topWindows" : [
+                {
+                    "actuatorRelayIndexExtend" : 19,
+                    "actuatorRelayIndexRetract" : 20
+                },
+                {
+                    "actuatorRelayIndexExtend" : 27,
+                    "actuatorRelayIndexRetract" : 28
+                },
+                {
+                    "actuatorRelayIndexExtend" : 29,
+                    "actuatorRelayIndexRetract" : 30
+                },
+                {
+                    "actuatorRelayIndexExtend" : 31,
+                    "actuatorRelayIndexRetract" : 32
+                }
+            ],
+            "extremeTemperatureRange" : [10, 27],
+            "targetTemperatureRange" : [18, 21],
+            "targetHumidity%" : [60, 70],
+            "minimumTargetCO2%" : 0.01,
+            "heatingSolenoidRelayIndex" : 41,
+            "mistingSolenoidRelayIndex" : 42,
+            "climateZoneNumber" : 2,
+            "climateZoneMQTTtopic" : "climate_zone_2",
+            "SCD30sensorMQTTtopic" : "SCD30"
+        }
+    ]
+}

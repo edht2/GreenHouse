@@ -1,0 +1,8 @@
+Everything exported under this pi with MQTT, will have the prefix:
+    "SYS/ClimateZone[x]/[rest of command]"
+
+Beds are exported like this:
+    "SYS/ClimateZone[x]/bed/[bedno]"
+
+SCD30 is exported like this too:
+    "SYS/ClimateZone[x]/scd30"

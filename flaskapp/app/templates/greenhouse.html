@@ -1,0 +1,140 @@
+
+
+{% macro render_field(field) %}
+    <div class="field">
+
+            {{ field.label }}
+
+            {{ field(**kwargs)|safe }}
+
+        {% if field.errors %}
+            <ul class='errors'>
+            {% for error in field.errors %}
+                <li class='error'>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+            {{ field(**kwargs)|safe }}
+  
+        
+    </div>
+{% endmacro %}
+
+
+
+{% extends "base.html" %}
+{% block title %}Greenhouse{% endblock %}
+{% block header %}Greenhouse{% endblock %}
+{% block content %}
+    <!-- Body stuff goes here! -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/greenhouse.css') }}">
+
+    <h1>climate limits</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+
+    <div class="table-container">  
+        <table>
+        <thead>  <tr>
+            <th>Description</th>
+            <th>low_</th>
+            <th>high</th>
+            <th>actual</th>
+            </tr>
+        </thead>
+        <tbody>  
+            <tr>
+            <td>{{ form.cz1_temp_low.label }}</td>
+            <td>{{ form.cz1_temp_low}}</td>
+            <td>{{ form.cz1_temp_high }}</td>
+            <td><div id = "cz1_temp">28°C</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz1_rh_low.label }}</td>
+            <td>{{ form.cz1_rh_low }}</td>
+            <td>{{ form.cz1_rh_high }}</td>
+            <td><div id = "cz1_rh">67%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz1_bed1_low.label }}</td>
+            <td>{{ form.cz1_bed1_low }}</td>
+            <td>{{ form.cz1_bed1_high }}</td>
+            <td><div id = "cz1_bed1">54%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz1_bed2_low.label }}</td>
+            <td>{{ form.cz1_bed2_low }}</td>
+            <td>{{ form.cz1_bed2_high }}</td>
+            <td><div id = "cz1_bed2">51%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz1_bed3_low.label }}</td>
+            <td>{{ form.cz1_bed3_low }}</td>
+            <td>{{ form.cz1_bed3_high }}</td>
+            <td><div id = "cz1_bed3">69%</div></td>
+            </tr>
+            <thead>  <tr>
+                <th>Description</th>
+                <th>low</th>
+                <th>high</th>
+                <th>actual</th>
+                </tr>
+            </thead>
+            <tr>
+            <td>{{ form.cz2_temp_low.label }}</td>
+            <td>{{ form.cz2_temp_low }}</td>
+            <td>{{ form.cz2_temp_high }}</td>
+            <td><div id = "cz2_temp">28°C</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz2_rh_low.label }}</td>
+            <td>{{ form.cz2_rh_low }}</td>
+            <td>{{ form.cz2_rh_high }}</td>
+            <td><div id = "cz2_rh">67%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz2_bed4_low.label }}</td>
+            <td>{{ form.cz2_bed4_low }}</td>
+            <td>{{ form.cz2_bed4_high }}</td>
+            <td><div id = "cz2_bed4">61%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz2_bed5_low.label }}</td>
+            <td>{{ form.cz2_bed5_low }}</td>
+            <td>{{ form.cz2_bed5_high }}</td>
+            <td><div id = "cz2_bed5">65%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz2_bed6_low.label }}</td>
+            <td>{{ form.cz2_bed6_low }}</td>
+            <td>{{ form.cz2_bed6_high }}</td>
+            <td><div id = "cz2_bed6">63%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz2_bed7_low.label }}</td>
+            <td>{{ form.cz2_bed7_low }}</td>
+            <td>{{ form.cz2_bed7_high }}</td>
+            <td><div id = "cz2_bed7">68%</div></td>
+            </tr>
+            <tr>
+            <td>{{ form.cz2_bed8_low.label }}</td>
+            <td>{{ form.cz2_bed8_low }}</td>
+            <td>{{ form.cz2_bed8_high }}</td>
+            <td><div id = "cz2_bed8">65%</div></td>
+            </tr>
+        </tbody>
+        </table>
+        <input id='submit' type='submit' value='submit'>
+    </form>
+    </div>
+    <script src='/static/js/ajax.js'></script> 
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Calendar{% endblock %}
+{% block header %}Calendar{% endblock %}
+{% block content %}
+    <!-- Body stuff goes here! -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+    <script src='/static/js/calendar.js'></script>
+
+    {% if (len_dates < 1) %}
+        <center><div class='note'>No upcoming dates!</div></center>
+    {% endif %}
+
+    <center>
+        <input class='nav' id="prev" type='button' value="<" onclick='window.location.href += "/prev"'>
+        <input class='nav' id="next" type='button' value=">" onclick='window.location.href += "/next"'>
+    </center>
+
+    <div id='calendar'>
+        {% for i in range(len_dates) %}
+            <div class='date' id='{{ i }}' onclick='addEvent("{{ i }}", "{{ dates[i][0] }}")'>
+                {{ dn[i] }} - {{ dates[i].pop(0) }}
+                {% for event in dates[i] %}
+                    <div class='event' onclick='editEvent({{ i }})'>
+                        {{ event.event_title }}
+                    </div>
+                    <div class='brk'></div>
+                {% endfor %}
+            </div>
+            <div class="break"></div>
+        {% endfor %}
+    </div>
+
+    
+{% endblock %}
