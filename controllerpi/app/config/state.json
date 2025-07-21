@@ -5,6 +5,8 @@
                 {
                     "chirpSensorI2CAddress" : "0x10",
                     "chirpSensorCalibration" : [200, 500],
+                    "safeModeTimerFrequency" : 20,
+                    "safeModeTimerPeriod" : 20,
                     "wateringSolenoidRelayIndex" : 33,
                     "bedMoistureRange" : [20, 40],
                     "bedNumber" : 1,
@@ -13,6 +15,8 @@
                 {
                     "chirpSensorI2CAddress" : "0x11",
                     "chirpSensorCalibration" : [200, 500],
+                    "safeModeTimerFrequency" : 20,
+                    "safeModeTimerPeriod" : 20,
                     "wateringSolenoidRelayIndex" : 34,
                     "bedMoistureRange" : [20, 40],
                     "bedNumber" : 2,
@@ -21,6 +25,8 @@
                 {
                     "chirpSensorI2CAddress" : "0x12",
                     "chirpSensorCalibration" : [200, 500],
+                    "safeModeTimerFrequency" : 20,
+                    "safeModeTimerPeriod" : 20,
                     "wateringSolenoidRelayIndex" : 35,
                     "bedMoistureRange" : [20, 40],
                     "bedNumber" : 3,
@@ -71,6 +77,8 @@
                 {
                     "chirpSensorI2CAddress" : "0x30",
                     "chirpSensorCalibration" : [200, 500],
+                    "safeModeTimerFrequency" : 20,
+                    "safeModeTimerPeriod" : 20,
                     "wateringSolenoidRelayIndex" : 36,
                     "bedMoistureRange" : [20, 40],
                     "bedNumber" : 1,
@@ -79,6 +87,8 @@
                 {
                     "chirpSensorI2CAddress" : "0x31",
                     "chirpSensorCalibration" : [200, 500],
+                    "safeModeTimerFrequency" : 20,
+                    "safeModeTimerPeriod" : 20,
                     "wateringSolenoidRelayIndex" : 37,
                     "bedMoistureRange" : [20, 40],
                     "bedNumber" : 2,
@@ -87,6 +97,8 @@
                 {
                     "chirpSensorI2CAddress" : "0x32",
                     "chirpSensorCalibration" : [200, 500],
+                    "safeModeTimerFrequency" : 20,
+                    "safeModeTimerPeriod" : 20,
                     "wateringSolenoidRelayIndex" : 38,
                     "bedMoistureRange" : [20, 40],
                     "bedNumber" : 3,
@@ -95,6 +107,8 @@
                 {
                     "chirpSensorI2CAddress" : "0x33",
                     "chirpSensorCalibration" : [200, 500],
+                    "safeModeTimerFrequency" : 20,
+                    "safeModeTimerPeriod" : 20,
                     "wateringSolenoidRelayIndex" : 39,
                     "bedMoistureRange" : [20, 40],
                     "bedNumber" : 4,

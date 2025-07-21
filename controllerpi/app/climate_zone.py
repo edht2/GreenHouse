@@ -1,11 +1,13 @@
-from app.config.config import state, device_name
+from app.config.config import state
 from app.tools.log import log
 from app.control.actuator import Actuator
 from app.bed import Bed
 from json import load
 
 class ClimateZone:
+    
     def __init__(self, climate_zone_number: int) -> None:
+        
         self.climate_zone_number = climate_zone_number
         
         self.beds = [
@@ -39,11 +41,15 @@ class ClimateZone:
         log('OK', "climatezone", "init", f"Successfuly initialised climate-zone", arg=self.climate_zone_number)
         # log the climate-zone has been created!
         
+        
     def update(self) -> None:
+        
         for bed in self.beds:
+            
             bed.update()
             # do an update!!
         
         state = load(open("app/config/state.json"))["climateZones"]
+        # reload state incase there were any changes to the ranges and tergets
         
         """ Add climatezone temperature, humidity and co2 regulation here!! """

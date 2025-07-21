@@ -3,7 +3,7 @@ from app.config.config import device_name
 from datetime import datetime
 import re
 
-def len_no_ansi(string) -> str:
+def len_no_ansi(string) -> int:
     return len(re.sub(
         r'[\u001B\u009B][\[\]()#;?]*((([a-zA-Z\d]*(;[-a-zA-Z\d\/#&.:=?%@~_]*)*)?\u0007)|((\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-ntqry=><~]))', '', string))
 

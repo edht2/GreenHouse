@@ -1,0 +1,1 @@
+'controllerpi/run.py' MUST be set as a startup application use 'etc/rc.local'
