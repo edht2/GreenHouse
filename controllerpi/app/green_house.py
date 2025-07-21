@@ -9,10 +9,8 @@ class GreenHouse:
         self.climate_zones = [ClimateZone(climate_zone["climateZoneNumber"]) for climate_zone in state]
         # create the climate zone object
         
-        log(device_name, True, "greenhouse", "init", "App has been successfuly setup")
-        print("-" * 70)
-        
-        self.start_app_loop()
+        log('OK', "greenhouse", "init", "App has been successfuly setup")
+        print(f'\n{"—" * 45} GREEN-HOUSE INITIALISED {"—" * 45}\n') # nice break in log
         
     def update(self) -> None:
         for climate_zone in self.climate_zones:
@@ -22,11 +20,24 @@ class GreenHouse:
     def start_app_loop(self) -> None:
         while True:
             try:
-                log(device_name, None, "greenhouse", "app_loop", "Triggering new update")
-                self.update()
-                # trigger an update
-                log(device_name, True, "greenhouse", "app_loop", "Successfuly performed an update")
+                log('WAIT', "greenhouse", "app_loop", "Triggering new update")
+                self.update() # trigger an update
+                
+                log('OK', "greenhouse", "app_loop", "Successfuly performed an update")
+                
             except Exception as e:
-                log(device_name, False, "greenhouse", "app_loop", "Failed to perform update", error=e)
+                
+                log('FATAL', "greenhouse", "app_loop", "Failed to perform update", error=e)
+                # Oh no! A fatal error has occured!
+                
+                # to avoid potential dangers to the green-house it is imperitive that all watering soloids and windows are closed
+                for climate_zone in self.climate_zones:
+                    for bed in climate_zone.beds:
+                        bed.watering_solenoid.close()
+                        # this will close all watering solenoids
+                    
+                    for window in climate_zone.side_windows + climate_zone.top_windows:
+                        window.retract()
+                        # close all windows
                 
             sleep(update_frequency)

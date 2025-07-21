@@ -6,12 +6,11 @@ It is a good idea to read over these just so you understand the greenhouse bette
 NOTES:
     If you can't ssh into a sensorpi, unplug it and plug it back in
 
-    Both of the acctuator and solenoid classes have been made usless! To arm them again, uncomment the "relay.turn_of_relay..."
+    Both of the acctuator and solenoid classes have been made usless! To arm them again, uncomment the "relay.turn_on_relay..."
 
     All log messages are sent to the MQTT topic "log"
     All messages related in any way to a climate zone will have the prefix "climate_zone_<number>/foo/bar1"
 
-    Ask Ed if you are not sure
     Don't add todo items unless we have discussed it is a good idea
 
 TODO:
@@ -19,12 +18,12 @@ TODO:
 
     → Water the beds based on soil moisture
 
-    → Add temerature, humidity and co2  managment
+    → Add temerature, humidity and co2 managment
 
     → Allow communmication between the controllerpi and the flask app 
 
     → Add a safe mode for beds when the soil moisture sensor status returns "ER"
-        This could work in 3 ways as we discussed (ordered in practicality):
+        This could work in 3 ways as we discussed (ordered in practicality: low-high):
 
          · Water it for a few minutes in the morning and evening
 

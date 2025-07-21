@@ -24,7 +24,7 @@ class Bed:
         
         sub().subscribe(f"{state[self.climate_zone_number-1]['climateZoneMQTTtopic']}/{state[climate_zone_number-1]['Beds'][bed_number-1]['MQTTtopic']}", self.on_sensor_update)
         # subscribe to the sensor data stream!
-        print(f"{state[self.climate_zone_number-1]['climateZoneMQTTtopic']}/{state[climate_zone_number-1]['Beds'][bed_number-1]['MQTTtopic']}")
+        # log mqtt topic print(f"{state[self.climate_zone_number-1]['climateZoneMQTTtopic']}/{state[climate_zone_number-1]['Beds'][bed_number-1]['MQTTtopic']}")
         
         
 
@@ -49,7 +49,6 @@ class Bed:
                 if self.watering_solenoid.state == 0:
                     # if the solenoid is closed
                     self.watering_solenoid.open()
-                    print(f"Watering bed{self.bed_number}")
                     # open it!
                     
             elif self.soil_moisture_percent >= state[self.climate_zone_number-1]["Beds"][self.bed_number-1]["bedMoistureRange"][1]:
@@ -57,10 +56,10 @@ class Bed:
                 if self.watering_solenoid.state == 1:
                     # if the solenoid is open
                     self.watering_solenoid.close()
-                    print(f"Stopped watering bed{self.bed_number}")
                     # close it!
                     
-            # this are for perhaps the most important part of the app - watering the beds
+            # these are for perhaps the most important parts of the app - watering the beds
+            
         else:
-            log(device_name, "WARN", "bed", "update", "No sensor data for bed", arg=self.bed_number)
+            log("WARN", "bed", "update", "No sensor data (climatezone, bed)", arg=f"{self.climate_zone_number} : {self.bed_number}")
             # if this warn occurs too many times consecutivly then this bed should go into safe mode

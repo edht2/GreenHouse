@@ -13,6 +13,9 @@ class ClimateZone:
             for bed in state[self.climate_zone_number-1]["Beds"]]
         # gets all of the beds and creates a bed object for each one
         
+        log('OK', 'climatezone', 'init', 'Beds initialised for climate-zone', arg=self.climate_zone_number)
+        # log progess
+        
         self.side_windows = [Actuator([
             actuator_sw["actuatorRelayIndexExtend"], 
             actuator_sw["actuatorRelayIndexRetract"]],
@@ -27,7 +30,13 @@ class ClimateZone:
         ) for actuator_tw in state[self.climate_zone_number-1]["topWindows"]]
         # locate the addresses of the top and side windows then initialise them to the Actuator object
         
-        log(device_name, True, "climatezone", "init", f"Climate-zone {self.climate_zone_number} has been created")
+        log('OK', 'climatezone', 'init', 'Window acctuators initialised for climate-zone', arg=self.climate_zone_number)
+        
+        # +++++++
+        # WATERING SOLENOIDS
+        # +++++++
+        
+        log('OK', "climatezone", "init", f"Successfuly initialised climate-zone", arg=self.climate_zone_number)
         # log the climate-zone has been created!
         
     def update(self) -> None:
