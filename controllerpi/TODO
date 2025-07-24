@@ -6,7 +6,7 @@ It is a good idea to read over these just so you understand the greenhouse bette
 NOTES:
     If you can't ssh into a sensorpi, unplug it and plug it back in
 
-    Both of the acctuator and solenoid classes have been made usless! To arm them again, uncomment the "relay.turn_on_relay..."
+    Both of the acctuator and solenoid classes have been made usless for testing purposes! To arm them again, uncomment the "relay.turn_on_relay..."
 
     All log messages are sent to the MQTT topic "log"
     All messages related in any way to a climate zone will have the prefix "climate_zone_<number>/foo/bar1"
@@ -16,13 +16,13 @@ NOTES:
 TODO:
     → Correct the relay indexes for the acctuators and solenoids in "app/config/state.json"
 
-    → Water the beds based on soil moisture
+    ✅  → Water the beds based on soil moisture
 
-    → Add temerature, humidity and co2 managment
+    → Add temperature, humidity and co₂ managment
 
     → Allow communmication between the controllerpi and the flask app 
 
-    → Add a safe mode for beds when the soil moisture sensor status returns "ER"
+    ✅  → Add a safe mode for beds when the soil moisture sensor status returns "ER"
         This could work in 3 ways as we discussed (ordered in practicality: low-high):
 
          · Water it for a few minutes in the morning and evening
@@ -31,8 +31,12 @@ TODO:
            after watering. You could also time the normal time it takes to water
 
          · Water it based on the ajacent bed
+
+         · Water based on a set timer
     
-    → Restarting greenhouse at midnight, this includes sensorpis
+    ✅  → Restarting greenhouse at midnight, this includes sensorpis
+
+    → Calibrate the chirp sensors
 
 
 With all of these features added effectivly we will have a pretty good greenhouse 😎 😎 

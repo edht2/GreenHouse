@@ -79,12 +79,13 @@ class Bed:
             
             if self.ticks_without_sensor_data == max_ticks_without_data:
                 # too many consecutive ticks without data! going into safe mode
-                log("WARN", "bed", "safemode", "Going into safemode after missing too many ticks with data", arg=f"climate zone {self.climate_zone_number} / bed {self.bed_number}")
+                log("WARN", f"climatezone{self.climate_zone_number}-bed{self.bed_number}", "safemode", "Going into safemode after missing too many ticks with data")
                 
                 self.is_safe_mode = True
             
-            log("WARN", "bed", "update", "No sensor data (climatezone, bed)", arg=f"{self.climate_zone_number} : {self.bed_number}")
-            # if this warn occurs too many times consecutivly then this bed should go into safe mode
+            else:
+                log("WARN", f"climatezone{self.climate_zone_number}-bed{self.bed_number}", "update", "No sensor data")
+                # if this warn occurs too many times consecutivly then this bed should go into safe mode
         
         else:
             # in safe mode

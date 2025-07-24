@@ -31,7 +31,7 @@ class log:
         from app.mqtt.mqtt import pub
         pub().publish(f'log', self.msg)
         # publish the log
-        
+
         print(self.msg)
         # print the log
         

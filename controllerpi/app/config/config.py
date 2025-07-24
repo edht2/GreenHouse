@@ -9,7 +9,7 @@ mqtt_broker_address = "mqtt.eclipseprojects.io"
 update_frequency = 30
 # update every 30 seconds
 
-max_ticks_without_data = 5
+max_ticks_without_data = 2
 # after 5 consecutive ticks from a bed without data then go into safe mode
 
 state = load(open("app/config/state.json"))["climateZones"]
