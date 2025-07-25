@@ -163,8 +163,10 @@
         }
     ],
 
-    "windowMaxWindSpeed_knts": 20,
+    "topWindowOpenMaxWindSpeed": 40,
+    "sideWindowOpenMaxWindSpeed" : 25, 
+    "_comment_wind_sp" : "Wind speed in knots",
     "topWindowPrecipitationLimit" : 0.0,
     "sideWindowPrecipitationLimit" : 4.0,
-    "_comment" : "Precipitation is in mm/hr"
+    "_comment_precip" : "Precipitation is in mm/hr"
 }
