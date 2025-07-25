@@ -14,3 +14,9 @@ max_ticks_without_data = 2
 
 state = load(open("app/config/state.json"))["climateZones"]
 # state contains all of the target / hardware information to run the greenhouse
+
+longitude = -1.264416
+latitude = 50.747026
+# for weather forecast
+
+temperature_range_play = 2

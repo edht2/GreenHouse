@@ -64,8 +64,8 @@
 
             "extremeTemperatureRange" : [10, 27],
             "targetTemperatureRange" : [18, 21],
-            "targetHumidity%" : [60, 70],
-            "minimumTargetCO2%" : 0.01,
+            "targetVPDRange" : [0.8, 1.2],
+            "minimumTargetCO2ppm" : 200,
             "heatingSolenoidRelayIndex" : 37,
             "mistingSolenoidRelayIndex" : 38,
             "climateZoneNumber" : 1,
@@ -153,13 +153,18 @@
             ],
             "extremeTemperatureRange" : [10, 27],
             "targetTemperatureRange" : [18, 21],
-            "targetHumidity%" : [60, 70],
-            "minimumTargetCO2%" : 0.01,
+            "targetVPDRange" : [0.8, 1.2],
+            "minimumTargetCO2ppm" : 200,
             "heatingSolenoidRelayIndex" : 41,
             "mistingSolenoidRelayIndex" : 42,
             "climateZoneNumber" : 2,
             "climateZoneMQTTtopic" : "climate_zone_2",
             "SCD30sensorMQTTtopic" : "SCD30"
         }
-    ]
+    ],
+
+    "windowMaxWindSpeed_knts": 20,
+    "topWindowPrecipitationLimit" : 0.0,
+    "sideWindowPrecipitationLimit" : 4.0,
+    "_comment" : "Precipitation is in mm/hr"
 }
