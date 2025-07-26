@@ -19,4 +19,8 @@ longitude = -1.264416
 latitude = 50.747026
 # for weather forecast
 
+top_window_extention_time = 60
+side_window_extention_time = 40
+# 
+
 temperature_range_play = 2

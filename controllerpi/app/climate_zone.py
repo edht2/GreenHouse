@@ -3,10 +3,13 @@ from app.tools.log import log
 from app.control.actuator import Actuator
 from app.control.solenoid import Solenoid
 from app.tools.calculate_vpd import calculate_vpd
+from app.tools.percent_range import percent_range
+from app.control.windows import Windows
 from lib.weather.client import Client as Weather_Client
 from app.mqtt.mqtt import sub
 from app.bed import Bed
 from json import load
+from math import abs
 
 class ClimateZone:
     
@@ -22,8 +25,7 @@ class ClimateZone:
         
         self.values_set = False
         # *********************
-        
-        
+               
         # ******** Beds *******
         self.beds = [
             Bed(self.climate_zone_number, bed["bedNumber"]) 
@@ -32,41 +34,22 @@ class ClimateZone:
         log('OK', f'climatezone{self.climate_zone_number}', 'init', 'All beds initialised successfuly')
         # *********************
 
-    
         # * Climate Solenoids *
-        #self.heating_pipe = Solenoid(
-        #    state["climateZones"][self.climate_zone_number-1]["heatingSolenoidRelayIndex"]
-        #)
-        #self.misting_pipe = Solenoid(
-        #    state["climateZones"][self.climate_zone_number-1]["mistingSolenoidRelayIndex"]
-        #)
+        self.heating_pipe = Solenoid(state["climateZones"][self.climate_zone_number-1]["heatingSolenoidRelayIndex"])
+        self.misting_pipe = Solenoid(state["climateZones"][self.climate_zone_number-1]["mistingSolenoidRelayIndex"])
         # *********************
-
-        # ****** Windows ******
-        self.side_windows = [
-            Actuator([
-                actuator_sw["actuatorRelayIndexExtend"], 
-                actuator_sw["actuatorRelayIndexRetract"]],
-                extension_time=40
-        ) for actuator_sw in state[self.climate_zone_number-1]["sideWindows"]]
-        # creates all of the side_windows in the actuator class so you can type 'side_window[index].extend()'
         
-        self.top_windows = [
-            Actuator([
-                actuator_tw["actuatorRelayIndexExtend"], 
-                actuator_tw["actuatorRelayIndexRetract"]],
-                extension_time=60
-        ) for actuator_tw in state[self.climate_zone_number-1]["topWindows"]]
-        # locate the addresses of the top and side windows then initialise them to the Actuator object
+        # ****** Windows ******
+        self.top_windows = Windows('topWindow')
+        self.side_windows = Windows('sideWindow')
+        # create new window instance
         log('OK', f'climatezone{self.climate_zone_number}', 'init', 'Window acctuators initialised')
         # *********************
-        
         
         # *** SensorPi Data ***
         sub().subscribe(f'climate_zone_{self.climate_zone_number}', self.on_sensor_update)
         # subscribe to climate zone data
         # *********************
-        
         
         log('OK', f"climatezone{self.climate_zone_number}", "init", f"Successfuly initialised climate-zone")
         # log the climate-zone has been created!
@@ -83,33 +66,11 @@ class ClimateZone:
         self.co2_ppm = data['median_co2_ppm']
         
         self.vapour_pressure_defecit = calculate_vpd(self.relative_humidity)
-        # set the runtime variables  
+        # set the sensor variables  
         
         if not self.values_set:
             self.values_set = True
         # used for quick verification
-        
-        
-    def close_windows(self) -> None:
-        # closes all windows
-        if self.safe_window_validator('topWindow'):
-            # if it is safe to open the top windows
-            for top_window in self.top_windows: top_window.extend()
-            
-        if self.safe_window_validator('sideWindow'):
-            # if it is safe to open the side windows
-            for side_window in self.side_windows: side_window.extend()
-            
-            
-    def open_windows(self) -> None:
-        # opens all windows
-        if self.safe_window_validator('topWindow'):
-            # if it is safe to open the top windows
-            for top_window in self.top_windows: top_window.retract()
-            
-        if self.safe_window_validator('sideWindow'):
-            # if it is safe to open the side windows
-            for side_window in self.side_windows: side_window.retract()
         
         
     def update(self) -> None:
@@ -118,41 +79,77 @@ class ClimateZone:
             # for every bed do an update
             bed.update()
         
-        state = load(open("app/config/state.json"))["climateZones"]
-        # reload state incase there were any changes to the ranges and targets
-
-        """ This will use an 'extreme priority' based solution. Where if a value is out-side
-        of a range it is prioritised to be fixed even if that means it will cause another
-        problem soon. Otherwise temperature and VPD are prioritised.
-        """
-        
         if not self.values_set:
             # sensor data hasn't been recived yet! So no climate optimisation can occur
             log("WARN", f"climatezone{self.climate_zone_number}", "update", "No sensor data")
             return None
-        """ if no sensor values are sent for a while; say 20 minutes, go into safe mode where the internal
-        green-house data is assumed to be the same as the outside temperature. Of-coarse this is not good
-        as the point of a green-house is to seperate the outside temperature and internal! To prevent issues
-        an email will be sent to the owner (alhaigthomas@gmail.com) asking for the sensor to be replaced immediatly! """
         
-    
-        temp_state = False
-        vpd_state = False
+        state = load(open("app/config/state.json"))["climateZones"]
+        # reload state incase there were any changes to the ranges and targets
+
+        """ This will use an 'extreme priority' based solution. Where if a value is out-side of the extreme range it is
+        prioritised - everything else is dropped, to be fixed even if that means it will cause another problem soon. """
         
-        if (state['climateZones'][self.climate_zone_number-1]['targetTemperatureRange'][0] > self.temperature or
-        state['climateZones'][self.climate_zone_number-1]['targetTemperatureRange'][1] < self.temperature):
-            temp_state = True
-        # if temperature is out of the set ranges
-            
-        if (state['climateZones'][self.climate_zone_number-1]['targetVPDRange'][0] > self.vapour_pressure_defecit or
-        state['climateZones'][self.climate_zone_number-1]['targetVPDRange'][1] < self.vapour_pressure_defecit):
-            vpd_state = True
-        # if the vpd is out of the set ranges
-            
-         
-        if temp_state or vpd_state:
-            # correct temperature and vpd
+        if self.temperature < state['climateZones'][self.climate_zone_number-1]['extremeTemperatureRange'][0]:
+            # the green-house is way too cold!!! Emergency mode, drop everything and do everying
+            self.top_windows.close()
+            self.side_windows.close()
+            self.misting_pipe.close()
+            self.heating_pipe.open()
             return None
+        
+        if self.temperature > state['climateZones'][self.climate_zone_number-1]['extremeTemperatureRange'][1]:
+            # the green-house is way too hot!!!
+            self.top_windows.open()
+            self.side_windows.open()
+            self.misting_pipe.open()
+            self.heating_pipe.close()
+            return None
+        
+        if self.vapour_pressure_defecit < state['climateZones'][self.climate_zone_number-1]['extremeVPDRange'][0]:
+            # the green-house is way too damp!!!
+            self.top_windows.open()
+            self.side_windows.open()
+            self.misting_pipe.close()
+            self.heating_pipe.close()
+            return None
+        
+        if self.vapour_pressure_defecit > state['climateZones'][self.climate_zone_number-1]['extremeVPDRange'][1]:
+            # the green-house is way too dry / arid!!!
+            self.top_windows.close()
+            self.side_windows.close()
+            self.misting_pipe.open()
+            self.heating_pipe.close()
+            return None
+            
+        if self.co2_ppm < state['climateZones'][self.climate_zone_number-1]['minimumExtremeCO2ppm']:
+            # if CO2 is too low for proper operation ↓
+            self.top_windows.open()
+            self.side_windows.open()
+            # CO2 enrichment (boiler room fan)
+            return None
+        
+        normalised_temp = percent_range(state['climateZones'][self.climate_zone_number-1]['targetTemperatureRange'], self.temperature)
+        normalised_vpd = percent_range(state['climateZones'][self.climate_zone_number-1]['targetVPDRange'], self.vapour_pressure_defecit)
+        
+        if abs(50 - normalised_temp) > abs(50 - normalised_temp):
+            # the abs(50 - normalised_xyz) makes this
+            if normalised_temp >= 75 and normalised_temp < 90:
+                # if the climate-zone is at 75% heat
+                self.top_windows.open()
+                self.side_windows.open()
+                self.misting_pipe.close()
+                self.heating_pipe.close()
+                
+            if normalised_temp >= 90 and normalised_temp < 110:
+                # if the climate-zone is at 90% heat
+                self.top_windows.open()
+                self.side_windows.open()
+                self.misting_pipe.open()
+                self.heating_pipe.close()
+                            
+        else:
+            pass
             
         if not self.co2_ppm < state['climateZones'][self.climate_zone_number-1]['minimumTargetCO2ppm']:
             # if the CO₂ ppm is not less than the minimum level of CO₂ there is no problem and we don't need to do anything
@@ -168,21 +165,3 @@ class ClimateZone:
             # if outside temperature is not too cold ( with some play ) open the windows as it should get the VPD
             
             self.open_windows()
-                        
-        
-    def safe_window_validator(self, window: str) -> bool:
-        """ Makes sure that by opening the windows no damage will be caused to the green-house. For example if
-        there is rain or high winds they could cause significant damage """
-        
-        if Weather_Client().get_current().wind_sp > state[f'{window}OpenMaxWindSpeed'] * 1.852:
-            # if wind speed it too high for the windows, damage can be caused therefore it is not worth opening the windows
-            # 'Weather_Client.get_current.wind_sp' is in km/h so by multiplying max speed in knots by 1.852 we turn it to km/h
-            return False
-        
-        if not Weather_Client().get_current().precip * 4 > state[f'{window}PrecipitationLimit']:
-            # if it is raining less hard than the window limit it is ok
-            # 'Weather_Client().get_current().precip' is in mm/0.25hr so multiply it by 4 to get mm/hr
-            return False
-        
-        return True
-        # Weather is good - open the windows
